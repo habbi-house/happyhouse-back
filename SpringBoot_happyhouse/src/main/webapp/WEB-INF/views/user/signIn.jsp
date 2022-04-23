@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<%=root %>/resources/static/css/style.css" />
 	<%@ include file="../template/header.jsp" %>
 	<script src="<%=root %>/resources/static/js/util.js"></script>
+	<script src="<%=root %>/resources/static/js/user.js"></script>
   </head>
   <body>
     <div class="px-0 h-100">
@@ -82,7 +83,7 @@
 
               <button
                 id="signInBtn"
-                type="submit"
+                type="button"
                 style="background-color: #86c232"
                 class="flex-grow-1 border-0 mb-3 py-2 rounded-2 text-light fw-bold"
               >

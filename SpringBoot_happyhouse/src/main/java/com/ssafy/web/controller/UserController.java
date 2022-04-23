@@ -32,11 +32,20 @@ public class UserController {
 	public String createUser(UserVO user, RedirectAttributes redirectAttributes) {
 		System.out.println(user);
 		
-		userService.createUser(user);
+		int cnt = userService.checkId(user);
 		
-		redirectAttributes.addFlashAttribute("ok", true);
-		redirectAttributes.addFlashAttribute("msg", "회원가입 성공");
+		if(cnt == 0) {
+			userService.createUser(user);
+			
+			redirectAttributes.addFlashAttribute("ok", true);
+			redirectAttributes.addFlashAttribute("msg", "회원가입 성공");
+			
+			return "redirect:/user/login";
+		}
 		
-		return "redirect:/user/login";
+		redirectAttributes.addFlashAttribute("ok", false);
+		redirectAttributes.addFlashAttribute("msg", "이미 존재하는 아이디입니다.");
+		
+		return "redirect:/user/signIn";
 	}
 }

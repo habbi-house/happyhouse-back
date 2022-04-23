@@ -10,4 +10,10 @@
 		VALUES (#{id}, #{password}, #{name}, #{email}, #{phone})
 	</insert>
 	
+	<select id="checkId" parameterType="userVO" resultType="_int">
+		SELECT count(*)
+		FROM user
+		WHERE id=#{id}
+	</select>
+	
 </mapper>

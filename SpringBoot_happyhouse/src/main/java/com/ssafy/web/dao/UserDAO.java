@@ -12,4 +12,6 @@ public interface UserDAO {
 
 	public void createUser(UserVO user) throws DataAccessException;
 
+	public int checkId(UserVO user) throws DataAccessException;
+
 }

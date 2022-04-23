@@ -16,4 +16,8 @@ public class UserService {
 		userDAO.createUser(user);
 	}
 
+	public int checkId(UserVO user) {
+		return userDAO.checkId(user);
+	}
+
 }
