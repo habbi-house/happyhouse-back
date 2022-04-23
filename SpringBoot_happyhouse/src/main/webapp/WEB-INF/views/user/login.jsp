@@ -8,6 +8,7 @@
   	<link rel="stylesheet" href="<%=root %>/resources/static/css/style.css" />
     <%@ include file="../template/header.jsp" %>
     <script src="<%=root %>/resources/static/js/util.js"></script>
+    <script src="<%=root %>/resources/static/js/user.js"></script>
   </head>
   <body>
     <div class="px-0 h-100">
@@ -29,8 +30,7 @@
             style="width: max-content"
           >
             <h3 class="fw-bolder text-center">로그인</h3>
-            <form class="d-flex flex-column" action="main" method="post">
-            	  <input type="hidden" name="sign" value="login" />
+            <form class="d-flex flex-column" action="/user/login" method="post">
               <input
                 class="px-3 py-2 my-3 border-1 rounded-2"
                 type="text"
@@ -43,8 +43,8 @@
               <input
                 class="px-3 py-2 mb-3 border-1 rounded-2"
                 type="password"
-                id="pwd"
-                name="pwd"
+                id="password"
+                name="password"
                 placeholder="비밀번호"
                 required
               />
@@ -73,9 +73,6 @@
                 회원가입
               </button>
             </form>
-            <c:if test="${!empty msg}">
-            		<script>showAlert(flase, ${msg});</script>
-            </c:if>
           </div>
         </div>
       </div>

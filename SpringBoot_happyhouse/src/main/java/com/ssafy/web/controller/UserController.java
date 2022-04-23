@@ -1,10 +1,18 @@
 package com.ssafy.web.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +29,27 @@ public class UserController {
 	@GetMapping("/login")
 	public String login() {
 		return "user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(@RequestParam Map<String, String> map, HttpSession session,
+			HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		System.out.println(map);
+		
+		UserVO user = userService.getUser(map);
+		if(user != null) {
+			session.setAttribute("user", user);
+			
+			redirectAttributes.addFlashAttribute("ok", true);
+			redirectAttributes.addFlashAttribute("msg", user.getName() + " 님 안녕하세요.");
+			
+			return "redirect:/";
+		}
+		
+		redirectAttributes.addFlashAttribute("ok", false);
+		redirectAttributes.addFlashAttribute("msg", "잘못된 아이디 혹은 비밀번호입니다.");
+		
+		return "redirect:/user/login";
 	}
 	
 	@GetMapping("/signIn")
@@ -47,5 +76,16 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("msg", "이미 존재하는 아이디입니다.");
 		
 		return "redirect:/user/signIn";
+	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView myPage(@PathVariable("id") int no) {
+		ModelAndView mav = new ModelAndView();
+		UserVO user = userService.getUserByNo(no);
+		
+		mav.addObject("user", user);
+		mav.setViewName("user/mypage");
+		
+		return mav;
 	}
 }

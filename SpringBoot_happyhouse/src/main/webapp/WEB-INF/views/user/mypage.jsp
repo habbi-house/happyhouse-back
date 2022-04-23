@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="<%= root %>/resources/static/css/style.css" />
 	<%@ include file="../template/header.jsp" %>
 	<script src="<%=root %>/resources/static/js/util.js"></script>
-    <script src="<%= root %>/resources/static/js/account.js"></script>
     <script src="<%= root %>/resources/static/js/user.js"></script>
   </head>
   <body>
@@ -38,7 +37,7 @@
 	                size="28"
 	                type="text"
 	                class="px-2 py-1 mb-3 border-1 rounded-2"
-	                value="${currentUser.id}"
+	                value="${user.id}"
 	                readonly
 	              />
 	            </span>
@@ -50,7 +49,7 @@
 	                size="28"
 	                type="password"
 	                class="px-2 py-1 mb-3 border-1 rounded-2"
-	                value="${currentUser.password}"
+	                value="${user.password}"
 	                readonly
 	              />
 	            </span>
@@ -62,7 +61,7 @@
 	                size="28"
 	                type="text"
 	                class="px-2 py-1 mb-3 border-1 rounded-2"
-	                value="${currentUser.name}"
+	                value="${user.name}"
 	                readonly
 	              />
 	            </span>
@@ -74,7 +73,7 @@
 	                size="28"
 	                type="text"
 	                class="px-2 py-1 mb-3 border-1 rounded-2"
-	                value="${currentUser.email}"
+	                value="${user.email}"
 	                readonly
 	              />
 	            </span>
@@ -86,7 +85,7 @@
 	                size="28"
 	                type="text"
 	                class="px-2 py-1 mb-3 border-1 rounded-2"
-	                value="${currentUser.phone}"
+	                value="${user.phone}"
 	                readonly
 	              />
 	            </span>

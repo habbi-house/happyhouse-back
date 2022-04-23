@@ -1,5 +1,7 @@
 package com.ssafy.web.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,14 @@ public class UserService {
 
 	public int checkId(UserVO user) {
 		return userDAO.checkId(user);
+	}
+
+	public UserVO getUser(Map<String, String> map) {
+		return userDAO.getUser(map);
+	}
+
+	public UserVO getUserByNo(int no) {
+		return userDAO.getUserByNo(no);
 	}
 
 }

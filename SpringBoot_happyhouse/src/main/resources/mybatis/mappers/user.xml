@@ -16,4 +16,16 @@
 		WHERE id=#{id}
 	</select>
 	
+	<select id="getUser" parameterType="map" resultType="userVO">
+		SELECT *
+		FROM user
+		WHERE id=#{id} AND password=#{password}
+	</select>
+	
+	<select id="getUserByNo" parameterType="_int" resultType="userVO">
+		SELECT *
+		FROM user
+		WHERE no=#{no}
+	</select>
+	
 </mapper>
