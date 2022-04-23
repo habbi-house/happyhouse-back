@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:visited {
+  color: black;
+}
+
+#loginDiv,
+#signInDiv,
+#noticeDiv,
+#postDiv {
+  height: calc(100% - 255px);
+}
+
+#navBrand {
+  color: #86c232;
+  font-size: x-large;
+}
+
+.active {
+  font-weight: 800;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.tag:hover {
+  cursor: pointer;
+}
+
+input:focus {
+  outline: none;
+}
+
+.navbar-nav > li {
+  width: max-content;
+}
+
+.navbar-nav > li > a:hover {
+  font-weight: 800;
+}
+
+.main-bg-color {
+  background-color: #86c232;
+}
+
+.btn-primary {
+  color: #efefef;
+  background-color: #86c232;
+}
+
+.table-hover {
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: none !important;
+}
+
+select:focus {
+  outline: none !important;
+}
