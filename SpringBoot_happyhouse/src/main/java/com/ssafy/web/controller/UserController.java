@@ -2,8 +2,6 @@ package com.ssafy.web.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class UserController {
 	
 	@PostMapping("/login")
 	public String login(@RequestParam Map<String, String> map, HttpSession session,
-			HttpServletResponse response, RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes) {
 		System.out.println(map);
 		
 		UserVO user = userService.getUser(map);
@@ -50,6 +48,16 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("msg", "잘못된 아이디 혹은 비밀번호입니다.");
 		
 		return "redirect:/user/login";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+		session.invalidate();
+		
+		redirectAttributes.addFlashAttribute("ok", true);
+		redirectAttributes.addFlashAttribute("msg", "로그아웃 되었습니다.");
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/signIn")
