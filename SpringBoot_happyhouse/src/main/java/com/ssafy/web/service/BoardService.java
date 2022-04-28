@@ -22,5 +22,17 @@ public class BoardService {
 		return boardDAO.getPost(code);
 	}
 
+	public int getLastOriginNo() {
+		return boardDAO.getLastOriginNo();
+	}
 	
+	public int createPost(PostVO post) {
+		boardDAO.createPost(post);
+		return post.getCode();
+	}
+
+	public void createReplyPost(PostVO post) {
+		boardDAO.createPost(post);
+	}
+
 }

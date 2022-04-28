@@ -11,10 +11,24 @@
  		ORDER BY originNo DESC, groupLayer ASC, groupOrd ASC;
  	</select>
  
- 	<select id="getPost" parameterType="_int" resultType="postVO">
+ 	<select id="getPost" parameterType="int" resultType="postVO">
  		SELECT *
  		FROM board
  		WHERE code=#{code}
  	</select>
+ 	
+ 	<select id="getLastOriginNo" resultType="int">
+ 		SELECT max(originNo) FROM board
+ 	</select>
+ 	 	
+ 	<insert id="createPost" parameterType="postVO"> 		
+ 		INSERT INTO board (originNo, groupOrd, groupLayer, title, content, writer, reg_datetime)
+ 		VALUES (#{originNo}, #{groupOrd}, #{groupLayer}, #{title}, #{content}, #{writer}, now())
+ 		 		
+ 		<selectKey resultType="int" keyProperty="code" order="AFTER">
+ 			SELECT last_insert_id()
+ 		</selectKey>
+ 	</insert>
+
  
  </mapper>

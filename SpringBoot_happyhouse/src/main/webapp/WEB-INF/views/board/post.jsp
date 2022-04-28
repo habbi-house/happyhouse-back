@@ -11,9 +11,10 @@
   </head>
   <body>
     <div class="px-0 h-100">
-    	  <div class="container-lg navbar navbar-light">
-      	<%@ include file="../template/topBar.jsp" %>
-      </div>
+	  <%@ include file="../template/alertBar.jsp" %>
+	  <div class="container-lg navbar navbar-light">
+	  	<%@ include file="../template/topBar.jsp" %>
+	  </div>
 
       <!-- Post -->
       <div

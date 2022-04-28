@@ -16,5 +16,8 @@ public interface BoardDAO {
 
 	public PostVO getPost(int code) throws DataAccessException;
 
+	public void createPost(PostVO post) throws DataAccessException;
+	
+	public int getLastOriginNo() throws DataAccessException;
 	
 }
