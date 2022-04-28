@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.ssafy.web.dao.BoardDAO">
+ 
+ 	<select id="getAllPosts" resultType="postVO">
+ 		SELECT *
+ 		FROM board
+ 		ORDER BY originNo DESC, groupLayer ASC, groupOrd ASC;
+ 	</select>
+ 
+ 	<select id="getPost" parameterType="_int" resultType="postVO">
+ 		SELECT *
+ 		FROM board
+ 		WHERE code=#{code}
+ 	</select>
+ 
+ </mapper>
