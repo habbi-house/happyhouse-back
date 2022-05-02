@@ -9,6 +9,7 @@
     <%@ include file="./template/header.jsp" %>
     <script src="<%=root %>/resources/static/js/util.js"></script>
     <script src="<%=root %>/resources/static/js/user.js"></script>
+    <script src="<%=root %>/resources/static/js/changeSelect.js"></script>
   </head>
   <body>
     <div class="px-0">
@@ -41,40 +42,63 @@
           </div>
 
           <!-- Search Input -->
-          <div class="d-flex">
-            <div class="input-group flex-grow-1 border-0 me-2">
-              <select class="form-select" name="category1" id="category1">
-                <option selected>도/광역시</option>
-                <option value="1">서울특별시</option>
-                <option value="2">경기도</option>
-                <option value="3">제주도</option>
-              </select>
-            </div>
-            <div class="input-group flex-grow-1 border-0 me-2">
-              <select class="form-select" name="category2" id="category2">
-                <option selected>시/군/구</option>
-                <option value="1">강남구</option>
-                <option value="2">강동구</option>
-                <option value="3">광진구</option>
-              </select>
-            </div>
-            <div class="input-group flex-grow-1 border-0 me-2">
-              <select class="form-select" name="category2" id="category2">
-                <option selected>동</option>
-                <option value="1">대치동</option>
-                <option value="2">잠실동</option>
-                <option value="3">익선동</option>
-              </select>
-            </div>
-            <button
-              class="border-0 p-0 main-bg-color rounded"
-              style="width: max-content"
-            >
-              <i
-                class="fa-solid fa-magnifying-glass h6 text-light px-3 m-0"
-              ></i>
-            </button>
-          </div>
+	    <form action="/search/index" method="post">
+          <div
+		      class="w-100 bg-white shadow-sm p-3 d-flex"
+		      style="min-width: max-content"
+		    >
+		      <div
+		        class="input-group flex-grow-1 border-0 me-2"
+		        style="max-width: 160px"
+		      >
+		        <select class="form-select" name="category1" id="category1">
+		          <option selected>도/광역시</option>
+		          <option value="11">서울특별시</option>
+		          <option value="26">부산광역시</option>
+		          <option value="27">대구광역시</option>
+		          <option value="28">인천광역시</option>
+		          <option value="29">광주광역시</option>
+		          <option value="30">대전광역시</option>
+		          <option value="31">울산광역시</option>
+		          <option value="41">경기도</option>
+		          <option value="42">강원도</option>
+		          <option value="43">충청북도</option>
+		          <option value="44">충청남도</option>
+		          <option value="45">전라북도</option>
+		          <option value="46">전라남도</option>
+		          <option value="47">경상북도</option>
+		          <option value="48">경상남도</option>
+		          <option value="50">제주도</option>
+		        </select>
+		      </div>
+		      <input type="hidden" name="sigu" id="sigu" value = "test"/>
+		      <div
+		        class="input-group flex-grow-1 border-0 me-2"
+		        style="max-width: 160px"
+		      >
+		        <select class="form-select" name="category2" id="category2">
+		          <option selected>시/군/구</option>
+		        </select>
+		        <input type="hidden" name="gugun" id="gugun"/>
+		      </div>
+		      <div
+		        class="input-group flex-grow-1 border-0 me-2"
+		        style="max-width: 160px"
+		      >
+		        <select class="form-select" name="category3" id="category3">
+		          <option selected>동</option>
+		        </select>
+		        <input type="hidden" name="dong" id="dong"/>
+		      </div>
+		      <button
+		        class="btn rounded border-0 shadow-sm text-light"
+		        type="submit"
+		        style="height: 40px; background-color: #86c232"
+		      >
+		        <i class="fa-solid fa-magnifying-glass text-light"></i>
+		      </button>
+		    </div>
+	    	</form>
         </div>
       </div>
 

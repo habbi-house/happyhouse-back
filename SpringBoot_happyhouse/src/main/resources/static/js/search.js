@@ -31,6 +31,20 @@ $(document).ready(function () {
     locNum3 = $(this).val();
     locName3 = $("select[name=category3] option:selected").text();
   });
+  
+  let e1 = document.getElementById("category1");
+  let e2 = document.getElementById("category2");
+  let e3 = document.getElementById("category3");
+  locName1 = e1.options[e1.selectedIndex].text;
+  locName2 = e2.options[e2.selectedIndex].text;
+  locName3 = e3.options[e3.selectedIndex].text;
+  
+  if(locName3){
+	  const address = locName1 + " " + locName2 + " " + locName3;
+	  showCenterLocation(address);
+	  showAllLocations(address);
+  }
+  
 });
 
 function loadData(type, items) {
@@ -150,25 +164,29 @@ function requestAPIandLoad(code) {
 	  const e3 = document.getElementById("category3");
 	  let dong = e3.options[e3.selectedIndex].text;
 	  
-	  $.post('search', {dong}, function(houseDealList) {
+	  $.post('/search', {dong}, function(houseDealList) {
 		  console.log(houseDealList[0]);
-		  for(const deal of houseDealList) {
-			const { aptName, dealAmount, area, dealYear,
-				dealMonth, dealDay, builtYear, dong, areaNumber, floor } = deal;
-			let item = {};
-            item.name = aptName;
-            item.price = dealAmount + "만원";
-            item.area = area + "제곱미터";
-            item.date = dealYear + ". " + dealMonth + ". " + dealDay;
-            item.constructedYear = builtYear;
-            item.dong = dong;
-            item.areaNumber = areaNumber;
-            item.floor = floor;
-            items.push(item);
+		  if(houseDealList[0]){
+			  for(const deal of houseDealList) {
+				  const { aptName, dealAmount, area, dealYear,
+					  dealMonth, dealDay, builtYear, dong, areaNumber, floor } = deal;
+					  let item = {};
+					  item.name = aptName;
+					  item.price = dealAmount + "만원";
+					  item.area = area + "제곱미터";
+					  item.date = dealYear + ". " + dealMonth + ". " + dealDay;
+					  item.constructedYear = builtYear;
+					  item.dong = dong;
+					  item.areaNumber = areaNumber;
+					  item.floor = floor;
+					  items.push(item);
+			  }
+			  $(".list-group").html("");
+			  localStorage.setItem("items", JSON.stringify(items));
+			  loadData("total", items);			  
+		  } else{
+			  $(".list-group").html("거래 정보가 없습니다.");
 		  }
-		  $(".list-group").html("");
-		  localStorage.setItem("items", JSON.stringify(items));
-		  loadData("total", items);
 	  });
 	  
 	  // 지도 정보 가져오기

@@ -13,8 +13,8 @@ public class HouseService {
 	@Autowired
 	HouseDAO houseDAO;
 
-	public List<HouseDealVO> getHouseDealList(String code) {
-		return houseDAO.getHouseDealList(code);
+	public List<HouseDealVO> getHouseDealList(String dong) {
+		return houseDAO.getHouseDealList(dong);
 	}
 
 }
