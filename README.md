@@ -122,6 +122,8 @@
 
 답글 작성하기 버튼을 통해 답글 작성 페이지로 넘어갈 수 있음
 
+<br/>
+
 <img src="./img/board_5.png" />
 
 답글 작성 후, 게시글 리스트 (공지사항 메인 페이지) 페이지로 이동하면, `RE:` 로 답글이 생성되었음을 확인
@@ -167,7 +169,7 @@
 
 <img src="./img/user_1.png" />
 
-<img src="./img/user_2.png />
+<img src="./img/user_2.png" />
 
 <br/>
 
@@ -186,6 +188,8 @@
 <img src="./img/user_5.png" />
 
 -> 로그인 실패: 잘못된 아이디 혹은 비밀번호
+
+<br/>
 
 <img src="./img/user_6.png" />
 
@@ -207,9 +211,13 @@
 
 -> 마이 페이지에서 회원 정보 수정 및 탈퇴 가능
 
+<br/>
+
 <img src="./img/user_8.png" />
 
 수정 버튼을 눌러, readonly 속성이었던 input 태그들을 활성화
+
+<br/>
 
 <img src="./img/user_9.png" />
 
@@ -221,6 +229,8 @@
 
 
 <img src="./img/user_12.png" />
+
+<br/>
 
 <img src="./img/user_13.png" />
 
