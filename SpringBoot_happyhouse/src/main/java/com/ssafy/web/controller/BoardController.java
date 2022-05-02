@@ -47,7 +47,7 @@ public class BoardController {
 
 	@GetMapping("/create")
 	public ModelAndView createPostView(@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
-			@RequestParam(value = "groupLayer", required = false) int groupLayer) {
+			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer) {
 		ModelAndView mav = new ModelAndView("board/createPost");
 		if (originNo > 0) { // 답글 작성하기
 			mav.addObject("originNo", originNo);
