@@ -36,11 +36,7 @@ public class BoardService {
 	}
 	
 	public int getLastGroupOrd(PostVO post) {
-		System.out.println("Service");
-		System.out.println(post.getOriginNo());
-		System.out.println(post.getGroupLayer());
-		Integer ord = boardDAO.getLastGroupOrd();
-		System.out.println(ord);
+		Integer ord = boardDAO.getLastGroupOrd(post);
 		return ord;
 	}
 	

@@ -20,7 +20,7 @@ public interface BoardDAO {
 	
 	public Integer getLastOriginNo() throws DataAccessException;
 	
-	public Integer getLastGroupOrd() throws DataAccessException;
+	public Integer getLastGroupOrd(PostVO post) throws DataAccessException;
 	
 	public int getGroupLayerByOriginNo(int originNo) throws DataAccessException;
 	
