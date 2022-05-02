@@ -53,11 +53,12 @@
                 </button>
 
                 <button
-                  id="updatePostBtn"
+                  id="replyPostBtn"
+                  onclick="location.href='/board/create?originNo=${post.originNo}&groupLayer=${post.groupLayer}'"
                   class="border-0 mb-3 px-3 py-2 rounded-2 text-light fw-bold"
                   style="background-color: #86c232; width: max-content"
                 >
-                  수정하기
+                  답글 작성하기
                 </button>
               </div>
             </div>

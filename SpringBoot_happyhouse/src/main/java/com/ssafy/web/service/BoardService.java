@@ -22,7 +22,7 @@ public class BoardService {
 		return boardDAO.getPost(code);
 	}
 
-	public int getLastOriginNo() {
+	public Integer getLastOriginNo() {
 		return boardDAO.getLastOriginNo();
 	}
 	
@@ -33,6 +33,19 @@ public class BoardService {
 
 	public void createReplyPost(PostVO post) {
 		boardDAO.createPost(post);
+	}
+	
+	public int getLastGroupOrd(PostVO post) {
+		System.out.println("Service");
+		System.out.println(post.getOriginNo());
+		System.out.println(post.getGroupLayer());
+		Integer ord = boardDAO.getLastGroupOrd();
+		System.out.println(ord);
+		return ord;
+	}
+	
+	public int getGroupLayerByOriginNo(int originNo) {
+		return boardDAO.getGroupLayerByOriginNo(originNo);
 	}
 
 }

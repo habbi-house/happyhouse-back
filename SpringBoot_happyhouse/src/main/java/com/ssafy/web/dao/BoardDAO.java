@@ -18,6 +18,10 @@ public interface BoardDAO {
 
 	public void createPost(PostVO post) throws DataAccessException;
 	
-	public int getLastOriginNo() throws DataAccessException;
+	public Integer getLastOriginNo() throws DataAccessException;
+	
+	public Integer getLastGroupOrd() throws DataAccessException;
+	
+	public int getGroupLayerByOriginNo(int originNo) throws DataAccessException;
 	
 }

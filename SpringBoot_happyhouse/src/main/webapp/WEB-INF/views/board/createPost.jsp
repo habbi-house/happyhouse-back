@@ -28,6 +28,12 @@
           >
             <h3 class="fw-bolder text-start">글 작성하기</h3>
             <form class="d-flex flex-column" action="create" method="post">
+              <c:if test="${!empty originNo}">          
+	              <input type="hidden" name="originNo" value="${originNo}" />
+              </c:if>
+              <c:if test="${!empty groupLayer}">          
+	              <input type="hidden" name="groupLayer" value="${groupLayer}" />
+              </c:if>
               <input
                 class="px-3 py-2 my-3 border-1 rounded-2"
                 type="text"

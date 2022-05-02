@@ -17,7 +17,7 @@
  		WHERE code=#{code}
  	</select>
  	
- 	<select id="getLastOriginNo" resultType="int">
+ 	<select id="getLastOriginNo" resultType="Integer">
  		SELECT max(originNo) FROM board
  	</select>
  	 	
@@ -30,5 +30,22 @@
  		</selectKey>
  	</insert>
 
+	<select id="getLastGroupOrd" parameterType="postVO" resultType="int">
+		SELECT groupOrd
+		FROM board
+		WHERE originNo=#{originNo} AND groupLayer=#{groupLayer}
+		ORDER BY groupOrd DESC
+		LIMIT 1
+	</select>
+	
+	<update id="updatePost" parameterType="postVO">
+		UPDATE board
+		SET originNo=#{originNo}
+	</update>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM board
+		WHERE code=#{code}
+	</delete>
  
  </mapper>
