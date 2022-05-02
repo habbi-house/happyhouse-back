@@ -24,7 +24,13 @@
         <div class="position-relative w-50">
           <!-- Post Form -->
           <div id="postForm" class="bg-white p-4 rounded-3 shadow-sm">
-            <h3 class="fw-bolder text-start">게시글 보기</h3>
+          	<div class="d-flex justify-content-between">
+            	<h3 class="fw-bolder text-start">게시글 보기</h3>
+            	<c:if test="${post.writer eq user.id}">
+          			<i id="updateIcon" class="fa-solid fa-pen-to-square fa-xl" style="width: 24px; height: 33px; line-height: 33px"
+          			   onclick="location.href='/board/${post.code}/update'"></i>
+            	</c:if>
+          	</div>
             <div class="d-flex flex-column">
               <div class="d-flex mt-4 mb-2">
                 <span class="me-2 fw-bold">제목:</span>

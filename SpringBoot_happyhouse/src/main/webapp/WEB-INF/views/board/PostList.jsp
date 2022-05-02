@@ -8,7 +8,7 @@
     <script src="${pageContext.request.contextPath}/resources/static/js/util.js"></script>
   </head>
   <body>
-    <div class="container-lg px-0 h-100">
+    <div class="px-0 h-100">
 	  <%@ include file="../template/alertBar.jsp" %>
 	  <div class="container-lg navbar navbar-light">
 	  	<%@ include file="../template/topBar.jsp" %>

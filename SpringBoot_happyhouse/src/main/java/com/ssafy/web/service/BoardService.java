@@ -44,4 +44,12 @@ public class BoardService {
 		return boardDAO.getGroupLayerByOriginNo(originNo);
 	}
 
+	public void updatePost(PostVO newPost) {
+		boardDAO.updatePost(newPost);
+	}
+
+	public void deletePost(int code) {
+		boardDAO.deletePost(code);
+	}
+
 }

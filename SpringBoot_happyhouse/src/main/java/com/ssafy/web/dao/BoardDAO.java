@@ -23,5 +23,9 @@ public interface BoardDAO {
 	public Integer getLastGroupOrd(PostVO post) throws DataAccessException;
 	
 	public int getGroupLayerByOriginNo(int originNo) throws DataAccessException;
+
+	public void updatePost(PostVO newPost) throws DataAccessException;
+
+	public void deletePost(int code) throws DataAccessException;
 	
 }

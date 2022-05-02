@@ -36,8 +36,8 @@ public class BoardController {
 	}
 
 	@GetMapping("/{id}")
-	public ModelAndView getPost(@PathVariable String id) {
-		PostVO post = boardService.getPost(Integer.parseInt(id));
+	public ModelAndView getPost(@PathVariable("id") int code) {
+		PostVO post = boardService.getPost(code);
 
 		ModelAndView mav = new ModelAndView("board/post");
 		mav.addObject("post", post);
@@ -84,5 +84,36 @@ public class BoardController {
 
 		return "redirect:/board/" + code;
 	}
+	
+	@GetMapping("/{id}/update")
+	public ModelAndView updatePostView(@PathVariable("id") int code) {
+		PostVO post = boardService.getPost(code);
+		
+		ModelAndView mav = new ModelAndView("board/updatePost");
+		mav.addObject("post", post);
+		
+		return mav;
+	}
 
+	@PostMapping("/{id}/update")
+	public String updatePost(@PathVariable("id") int code, PostVO newPost, RedirectAttributes redirectAttributes) {
+		newPost.setCode(code);
+		boardService.updatePost(newPost);
+		System.out.println(newPost);
+		
+		redirectAttributes.addFlashAttribute("ok", true);
+		redirectAttributes.addFlashAttribute("msg", "글 수정 성공");
+		
+		return "redirect:/board/" + code;
+	}
+	
+	@PostMapping("/{id}/delete")
+	public String deletePost(@PathVariable("id") int code, RedirectAttributes redirectAttributes) {
+		boardService.deletePost(code);
+		
+		redirectAttributes.addFlashAttribute("ok", true);
+		redirectAttributes.addFlashAttribute("msg", "글 삭제 성공");
+		
+		return "redirect:/board";
+	}
 }

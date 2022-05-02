@@ -99,8 +99,8 @@ public class UserController {
 
 	@PostMapping("/{id}/update")
 	@ResponseBody
-	public String updateUser(@PathVariable("id") int no, UserVO user) {
-		userService.updateUser(user);
+	public String updateUser(@PathVariable("id") int no, UserVO newUser) {
+		userService.updateUser(newUser);
 
 		JSONObject json = new JSONObject();
 		json.put("ok", true);

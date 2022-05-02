@@ -40,7 +40,8 @@
 	
 	<update id="updatePost" parameterType="postVO">
 		UPDATE board
-		SET originNo=#{originNo}
+		SET title=#{title}, content=#{content}
+		WHERE code=#{code}
 	</update>
 	
 	<delete id="deletePost" parameterType="int">
