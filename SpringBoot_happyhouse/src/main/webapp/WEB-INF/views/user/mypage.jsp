@@ -28,7 +28,7 @@
           <!-- id, password, name, email, phone -->
           <div id="info" >
 			<form id="myForm" action="" method="post" class="d-flex flex-column mt-4">
-				<input type="hidden" name="sign" value="update" />
+				<input type="hidden" id="no" value="${user.no}" />
 	            <span>
 	              <label for="id" style="width: 80px">아이디&nbsp;</label>
 	              <input
@@ -36,19 +36,19 @@
 	                name="id"
 	                size="28"
 	                type="text"
-	                class="px-2 py-1 mb-3 border-1 rounded-2"
+	                class="px-2 py-1 mb-3 border-1 border-white rounded-2"
 	                value="${user.id}"
 	                readonly
 	              />
 	            </span>
 	            <span>
-	              <label for="pwd" style="width: 80px">비밀번호&nbsp;</label>
+	              <label for="password" style="width: 80px">비밀번호&nbsp;</label>
 	              <input
-	                id="pwd"
-	                name="pwd"
+	                id="password"
+	                name="password"
 	                size="28"
 	                type="password"
-	                class="px-2 py-1 mb-3 border-1 rounded-2"
+	                class="px-2 py-1 mb-3 border-1 border-white rounded-2"
 	                value="${user.password}"
 	                readonly
 	              />
@@ -60,7 +60,7 @@
 	                name="name"
 	                size="28"
 	                type="text"
-	                class="px-2 py-1 mb-3 border-1 rounded-2"
+	                class="px-2 py-1 mb-3 border-1 border-white rounded-2"
 	                value="${user.name}"
 	                readonly
 	              />
@@ -72,7 +72,7 @@
 	                name="email"
 	                size="28"
 	                type="text"
-	                class="px-2 py-1 mb-3 border-1 rounded-2"
+	                class="px-2 py-1 mb-3 border-1 border-white rounded-2"
 	                value="${user.email}"
 	                readonly
 	              />
@@ -84,7 +84,7 @@
 	                name="phone"
 	                size="28"
 	                type="text"
-	                class="px-2 py-1 mb-3 border-1 rounded-2"
+	                class="px-2 py-1 mb-3 border-1 border-white rounded-2"
 	                value="${user.phone}"
 	                readonly
 	              />
@@ -119,12 +119,31 @@
           </div>
           <div class="position-absolute bottom-0 mb-3">
             <a
-              id="deleteUserBtn"
               class="text-dark text-opacity-50"
               style="text-decoration: none; cursor: pointer"
+              data-bs-toggle="modal" data-bs-target="#deleteUserModal"
               >회원 탈퇴하기</a
             >
           </div>
+          
+          <!-- Vertically centered modal -->
+		  <div id="deleteUserModal" class="modal fade" tableindex="-1">
+			  <div class="modal-dialog modal-dialog-centered">
+			  	<div class="modal-content">
+			  		<div class="modal-header">
+			  			<h4 class="modal-title">회원 탈퇴</h4>
+			  			<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			  		</div>
+			  		<div class="modal-body">
+			  			정말로 탈퇴하시겠습니까?
+			  		</div>
+			  		<div class="modal-footer">
+			  			<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+			  			<button id="deleteUserBtn" type="button" class="btn" style="background-color: #86c232">확인</button>
+			  		</div>
+			  	</div>
+			  </div>
+		  </div>
         </div>
 
         <!-- 나의 관심 지역 -->

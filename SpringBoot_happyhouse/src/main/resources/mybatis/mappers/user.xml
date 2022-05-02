@@ -22,10 +22,21 @@
 		WHERE id=#{id} AND password=#{password}
 	</select>
 	
-	<select id="getUserByNo" parameterType="_int" resultType="userVO">
+	<select id="getUserByNo" parameterType="int" resultType="userVO">
 		SELECT *
 		FROM user
 		WHERE no=#{no}
 	</select>
+	
+	<update id="updateUser" parameterType="userVO">
+		UPDATE user
+		SET id=#{id}, password=#{password}, name=#{name}, email=#{email}, phone=#{phone}
+		WHERE no=#{no}
+	</update>
+	
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user
+		WHERE no=#{no}
+	</delete>
 	
 </mapper>

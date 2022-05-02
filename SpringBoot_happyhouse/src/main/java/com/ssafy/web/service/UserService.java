@@ -30,4 +30,11 @@ public class UserService {
 		return userDAO.getUserByNo(no);
 	}
 
+	public void updateUser(UserVO user) {
+		userDAO.updateUser(user);
+	}
+
+	public void deleteUser(int no) {
+		userDAO.deleteUser(no);
+	}
 }

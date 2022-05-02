@@ -20,4 +20,8 @@ public interface UserDAO {
 
 	public UserVO getUserByNo(int no) throws DataAccessException;
 
+	public void updateUser(UserVO user) throws DataAccessException;
+
+	public void deleteUser(int no) throws DataAccessException;
+
 }
