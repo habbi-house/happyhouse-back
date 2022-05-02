@@ -32,7 +32,7 @@
           class="position-absolute top-50 start-50 translate-middle"
           style="min-width: max-content"
         >
-          <div class="my-3 d-flex flex-column">
+          <div class="my-3 d-flex flex-column me-5">
             <span class="text-white h2 fw-bolder m-0"
               >어떤 집에서 살고 싶으신가요?&nbsp;&nbsp;&nbsp;&nbsp;</span
             >
@@ -44,7 +44,7 @@
           <!-- Search Input -->
 	    <form action="/search/index" method="post">
           <div
-		      class="w-100 bg-white shadow-sm p-3 d-flex"
+		      class="w-100 shadow-sm pt-3 d-flex"
 		      style="min-width: max-content"
 		    >
 		      <div

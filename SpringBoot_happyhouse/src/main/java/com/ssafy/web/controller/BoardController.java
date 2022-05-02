@@ -59,6 +59,10 @@ public class BoardController {
 	@PostMapping("/create")
 	public String createPost(PostVO post, HttpSession session, RedirectAttributes redirectAttributes) {
 		int originNo = post.getOriginNo();
+		
+		// 작성자 ID 저장
+		UserVO user = (UserVO) session.getAttribute("user");
+		post.setWriter(user.getId());
 
 		if (originNo > 0) { // 답글 작성하기
 			// groupOrd 값 저장
@@ -68,10 +72,6 @@ public class BoardController {
 			int groupOrd = boardService.getLastGroupOrd(post);
 			post.setGroupOrd(groupOrd + 1);
 		} else { // 원글 작성하기
-			// 작성자 ID 저장
-			UserVO user = (UserVO) session.getAttribute("user");
-			post.setWriter(user.getId());
-
 			// OriginNo 값 저장
 			Integer lastOriginNo = boardService.getLastOriginNo();
 			post.setOriginNo(lastOriginNo == null ? 1 : lastOriginNo + 1);
