@@ -89,17 +89,10 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ModelAndView myPage(@PathVariable("id") int no, HttpSession session, RedirectAttributes redirectAttributes) {
 		ModelAndView mav = new ModelAndView();
-		UserVO sessionVO = (UserVO)session.getAttribute("user");
-		if(no == Integer.parseInt(sessionVO.getNo())) {
-			UserVO user = userService.getUserByNo(no);
-			
-			mav.addObject("user", user);
-			mav.setViewName("user/mypage");
-		} else {
-			redirectAttributes.addFlashAttribute("ok", false);
-			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-			mav.setViewName("redirect:/");
-		}
+		UserVO user = userService.getUserByNo(no);
+		
+		mav.addObject("user", user);
+		mav.setViewName("user/mypage");
 
 		return mav;
 	}

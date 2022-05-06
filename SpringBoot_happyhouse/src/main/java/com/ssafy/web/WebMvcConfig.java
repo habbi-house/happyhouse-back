@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.ssafy.web.interceptor.AuthorizationInterceptor;
 import com.ssafy.web.interceptor.LoginInterceptor;
 
 @Configuration
@@ -20,5 +21,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.addPathPatterns("/board/**/delete")
 				.excludePathPatterns("/user/login")
 				.excludePathPatterns("/user/signIn");
+		
+		// 접근 권한을 체크
+		registry.addInterceptor(new AuthorizationInterceptor())
+			.addPathPatterns("/user/**")
+			.addPathPatterns("/board/**/update")
+			.addPathPatterns("/board/**/delete")
+			.excludePathPatterns("/user/login")
+			.excludePathPatterns("/user/signIn");
 	}
 }
