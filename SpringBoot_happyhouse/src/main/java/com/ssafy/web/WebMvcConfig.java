@@ -22,11 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/user/login")
 				.excludePathPatterns("/user/signIn");
 		
-		// 접근 권한을 체크
+		// 사용자가 접근 가능한 자원인지에 대한 권한 체크
 		registry.addInterceptor(new AuthorizationInterceptor())
 			.addPathPatterns("/user/**")
-			.addPathPatterns("/board/**/update")
-			.addPathPatterns("/board/**/delete")
 			.excludePathPatterns("/user/login")
 			.excludePathPatterns("/user/signIn");
 	}
