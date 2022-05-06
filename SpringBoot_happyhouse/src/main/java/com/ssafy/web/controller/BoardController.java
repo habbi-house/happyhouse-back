@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.web.service.BoardService;
@@ -36,12 +37,12 @@ public class BoardController {
 	}
 
 	@GetMapping("/{id}")
-	public ModelAndView getPost(@PathVariable("id") int code) {
+	public ModelAndView getPost(@PathVariable("id") int code) throws NoHandlerFoundException {
 		PostVO post = boardService.getPost(code);
 
 		ModelAndView mav = new ModelAndView("board/post");
 		mav.addObject("post", post);
-
+		
 		return mav;
 	}
 
@@ -99,7 +100,6 @@ public class BoardController {
 	public String updatePost(@PathVariable("id") int code, PostVO newPost, RedirectAttributes redirectAttributes) {
 		newPost.setCode(code);
 		boardService.updatePost(newPost);
-		System.out.println(newPost);
 		
 		redirectAttributes.addFlashAttribute("ok", true);
 		redirectAttributes.addFlashAttribute("msg", "글 수정 성공");

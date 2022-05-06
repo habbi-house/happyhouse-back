@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.web.dao.BoardDAO;
+import com.ssafy.web.exception.PostNotFoundException;
 import com.ssafy.web.vo.PostVO;
 
 @Service
@@ -18,8 +19,10 @@ public class BoardService {
 		return boardDAO.getAllPosts();
 	}
 
-	public PostVO getPost(int code) {
-		return boardDAO.getPost(code);
+	public PostVO getPost(int code) throws PostNotFoundException {
+		PostVO post = boardDAO.getPost(code);
+		if(post == null) throw new PostNotFoundException();
+		return post;
 	}
 
 	public Integer getLastOriginNo() {
