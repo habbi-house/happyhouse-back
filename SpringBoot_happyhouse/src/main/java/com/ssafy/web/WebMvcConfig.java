@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import com.ssafy.web.interceptor.AuthorizationInterceptor;
-import com.ssafy.web.interceptor.LoginInterceptor;
+import com.ssafy.web.interceptor.AuthenticationInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		
 		// 로그인 되어 있는 사용자만 허용
-		registry.addInterceptor(new LoginInterceptor())
+		registry.addInterceptor(new AuthenticationInterceptor())
 				.addPathPatterns("/user/**")
 				.addPathPatterns("/board/create")
 				.addPathPatterns("/board/**/update")
@@ -29,7 +29,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new AuthorizationInterceptor())
 			.addPathPatterns("/user/**")
 			.excludePathPatterns("/user/login")
-			.excludePathPatterns("/user/signIn");
+			.excludePathPatterns("/user/signIn")
+			.excludePathPatterns("/user/logout");
+		
 	}
 	
 	@Bean

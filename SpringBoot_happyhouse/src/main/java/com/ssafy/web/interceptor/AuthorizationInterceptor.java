@@ -24,21 +24,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		if(session != null) {
 			UserVO user = (UserVO)session.getAttribute("user");
 			if(user != null) {
-				String URL = request.getRequestURI().split("/")[1];
-				if(URL.equals("user")) {
-					Map pathVariables = (Map)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-					if(pathVariables.get("id").equals(user.getNo())) {
-						return true;
-					}
-				} else {
-//					PostVO post = (PostVO)request.getAttribute("post");
-//					System.out.println(post.getWriter());
-//					System.out.println(user.getName());
-//					if(post != null && post.getWriter().equals(user.getName())){
-//						return true;
-//					}
+				Map pathVariables = (Map)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+				if(pathVariables.get("id").equals(user.getNo())) {
 					return true;
 				}
+
 			}
 			
 		}

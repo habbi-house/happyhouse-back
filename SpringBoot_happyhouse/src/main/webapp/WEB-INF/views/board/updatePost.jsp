@@ -28,6 +28,7 @@
             
             <form class="d-flex flex-column" action="/board/${post.code}/update" method="post">
               <input type="hidden" id="code" name="code" value="${post.code}">
+              <input type="hidden" id="writer" name="writer" value="${post.writer}">
               <input
                 class="px-3 py-2 my-3 border-1 rounded-2"
                 type="text"
