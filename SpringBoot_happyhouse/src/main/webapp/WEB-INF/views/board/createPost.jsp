@@ -28,6 +28,7 @@
           >
             <h3 class="fw-bolder text-start">글 작성하기</h3>
             <form class="d-flex flex-column" action="create" method="post">
+              <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}" />
               <c:if test="${!empty originNo}">          
 	              <input type="hidden" name="originNo" value="${originNo}" />
               </c:if>

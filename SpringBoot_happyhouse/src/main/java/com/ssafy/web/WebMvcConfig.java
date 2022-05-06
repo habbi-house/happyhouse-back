@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import com.ssafy.web.interceptor.AuthorizationInterceptor;
+import com.ssafy.web.interceptor.CSRFInterceptor;
 import com.ssafy.web.interceptor.AuthenticationInterceptor;
 
 @Configuration
@@ -31,6 +32,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/user/login")
 			.excludePathPatterns("/user/signIn")
 			.excludePathPatterns("/user/logout");
+		
+		// CSRF 토큰 검증
+		registry.addInterceptor(new CSRFInterceptor())
+		.addPathPatterns("/board/create")
+		.addPathPatterns("/board/**/update")
+		.addPathPatterns("/board/**/delete");
 		
 	}
 	

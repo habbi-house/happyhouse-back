@@ -1,7 +1,9 @@
 package com.ssafy.web.controller;
 
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.web.exception.PostNotFoundException;
 import com.ssafy.web.service.BoardService;
 import com.ssafy.web.vo.PostVO;
 import com.ssafy.web.vo.UserVO;
@@ -48,8 +51,10 @@ public class BoardController {
 
 	@GetMapping("/create")
 	public ModelAndView createPostView(@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
-			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer) {
+			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer, HttpSession session) {
 		ModelAndView mav = new ModelAndView("board/createPost");
+		String token=UUID.randomUUID().toString();
+		session.setAttribute("CSRF_TOKEN", token);
 		if (originNo > 0) { // 답글 작성하기
 			mav.addObject("originNo", originNo);
 			mav.addObject("groupLayer", groupLayer);
@@ -60,7 +65,6 @@ public class BoardController {
 	@PostMapping("/create")
 	public String createPost(PostVO post, HttpSession session, RedirectAttributes redirectAttributes) {
 		int originNo = post.getOriginNo();
-		
 		// 작성자 ID 저장
 		UserVO user = (UserVO) session.getAttribute("user");
 		post.setWriter(user.getId());
@@ -82,8 +86,9 @@ public class BoardController {
 
 		redirectAttributes.addFlashAttribute("ok", true);
 		redirectAttributes.addFlashAttribute("msg", "글 등록 성공");
-
 		return "redirect:/board/" + code;
+		
+
 	}
 	
 	@GetMapping("/{id}/update")
@@ -94,6 +99,8 @@ public class BoardController {
 		if(post != null && user != null && post.getWriter().equals(user.getId())) {
 			mav.setViewName("board/updatePost");
 			mav.addObject("post", post);
+			String token=UUID.randomUUID().toString();
+			session.setAttribute("CSRF_TOKEN", token);
 		} else {
 			mav.setViewName("redirect:/");
 			redirectAttributes.addFlashAttribute("ok", false);
@@ -105,6 +112,7 @@ public class BoardController {
 
 	@PostMapping("/{id}/update")
 	public String updatePost(@PathVariable("id") int code, PostVO newPost, HttpSession session, RedirectAttributes redirectAttributes) {
+		
 		UserVO user = (UserVO)session.getAttribute("user");
 		
 		if(newPost != null && user != null && newPost.getWriter(). equals(user.getId())) {
@@ -124,6 +132,7 @@ public class BoardController {
 	
 	@PostMapping("/{id}/delete")
 	public String deletePost(@PathVariable("id") int code, HttpSession session, RedirectAttributes redirectAttributes) {
+		
 		UserVO user = (UserVO)session.getAttribute("user");
 		PostVO post = boardService.getPost(code);
 		if(post != null && user != null && post.getWriter().equals(user.getId())) {
@@ -136,6 +145,7 @@ public class BoardController {
 			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
 			return "redirect:/";
 		}
+		
 		return "redirect:/board";
 	}
 }

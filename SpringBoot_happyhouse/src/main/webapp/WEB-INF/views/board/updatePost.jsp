@@ -27,6 +27,7 @@
             <h3 class="fw-bolder text-start">게시글 수정하기</h3>
             
             <form class="d-flex flex-column" action="/board/${post.code}/update" method="post">
+              <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}" />
               <input type="hidden" id="code" name="code" value="${post.code}">
               <input type="hidden" id="writer" name="writer" value="${post.writer}">
               <input
