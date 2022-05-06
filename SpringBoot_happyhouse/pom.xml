@@ -102,6 +102,13 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>${jackson-databind-version}</version>
 		</dependency>
+		
+		<!-- Naver Lucy Filter -->
+		<dependency>
+			<groupId>com.navercorp.lucy</groupId>
+			<artifactId>lucy-xss-servlet</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
