@@ -45,16 +45,20 @@ public class BoardController {
 
 		ModelAndView mav = new ModelAndView("board/post");
 		mav.addObject("post", post);
-		
+
 		return mav;
 	}
 
 	@GetMapping("/create")
-	public ModelAndView createPostView(@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
-			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer, HttpSession session) {
+	public ModelAndView createPostView(
+			@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
+			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer,
+			HttpSession session) {
 		ModelAndView mav = new ModelAndView("board/createPost");
-		String token=UUID.randomUUID().toString();
+
+		String token = UUID.randomUUID().toString();
 		session.setAttribute("CSRF_TOKEN", token);
+
 		if (originNo > 0) { // 답글 작성하기
 			mav.addObject("originNo", originNo);
 			mav.addObject("groupLayer", groupLayer);
@@ -65,15 +69,12 @@ public class BoardController {
 	@PostMapping("/create")
 	public String createPost(PostVO post, HttpSession session, RedirectAttributes redirectAttributes) {
 		int originNo = post.getOriginNo();
+
 		// 작성자 ID 저장
 		UserVO user = (UserVO) session.getAttribute("user");
 		post.setWriter(user.getId());
 
 		if (originNo > 0) { // 답글 작성하기
-			// groupOrd 값 저장
-			System.out.println(post.getOriginNo());
-			System.out.println(post.getGroupLayer());
-
 			int groupOrd = boardService.getLastGroupOrd(post);
 			post.setGroupOrd(groupOrd + 1);
 		} else { // 원글 작성하기
@@ -87,65 +88,65 @@ public class BoardController {
 		redirectAttributes.addFlashAttribute("ok", true);
 		redirectAttributes.addFlashAttribute("msg", "글 등록 성공");
 		return "redirect:/board/" + code;
-		
 
 	}
-	
+
 	@GetMapping("/{id}/update")
-	public ModelAndView updatePostView(@PathVariable("id") int code, HttpSession session, RedirectAttributes redirectAttributes) {
-		UserVO user = (UserVO)session.getAttribute("user");
+	public ModelAndView updatePostView(@PathVariable("id") int code, HttpSession session,
+			RedirectAttributes redirectAttributes) {
+		UserVO user = (UserVO) session.getAttribute("user");
 		PostVO post = boardService.getPost(code);
+
 		ModelAndView mav = new ModelAndView();
-		if(post != null && user != null && post.getWriter().equals(user.getId())) {
+		if (post != null && user != null && post.getWriter().equals(user.getId())) {
 			mav.setViewName("board/updatePost");
 			mav.addObject("post", post);
-			String token=UUID.randomUUID().toString();
+			String token = UUID.randomUUID().toString();
 			session.setAttribute("CSRF_TOKEN", token);
 		} else {
 			mav.setViewName("redirect:/");
 			redirectAttributes.addFlashAttribute("ok", false);
 			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
 		}
-		
+
 		return mav;
 	}
 
 	@PostMapping("/{id}/update")
-	public String updatePost(@PathVariable("id") int code, PostVO newPost, HttpSession session, RedirectAttributes redirectAttributes) {
-		
-		UserVO user = (UserVO)session.getAttribute("user");
-		
-		if(newPost != null && user != null && newPost.getWriter(). equals(user.getId())) {
+	public String updatePost(@PathVariable("id") int code, PostVO newPost, HttpSession session,
+			RedirectAttributes redirectAttributes) {
+		UserVO user = (UserVO) session.getAttribute("user");
+
+		if (newPost != null && user != null && newPost.getWriter().equals(user.getId())) {
 			newPost.setCode(code);
 			boardService.updatePost(newPost);
-			
+
 			redirectAttributes.addFlashAttribute("ok", true);
 			redirectAttributes.addFlashAttribute("msg", "글 수정 성공");
-		} else {
-			redirectAttributes.addFlashAttribute("ok", false);
-			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-			return "redirect:/";
+
+			return "redirect:/board/" + code;
 		}
-		
-		return "redirect:/board/" + code;
+
+		redirectAttributes.addFlashAttribute("ok", false);
+		redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+		return "redirect:/";
 	}
-	
+
 	@PostMapping("/{id}/delete")
 	public String deletePost(@PathVariable("id") int code, HttpSession session, RedirectAttributes redirectAttributes) {
-		
-		UserVO user = (UserVO)session.getAttribute("user");
+		UserVO user = (UserVO) session.getAttribute("user");
 		PostVO post = boardService.getPost(code);
-		if(post != null && user != null && post.getWriter().equals(user.getId())) {
+		
+		if (post != null && user != null && post.getWriter().equals(user.getId())) {
 			boardService.deletePost(code);
-			
+
 			redirectAttributes.addFlashAttribute("ok", true);
 			redirectAttributes.addFlashAttribute("msg", "글 삭제 성공");
-		} else {
-			redirectAttributes.addFlashAttribute("ok", false);
-			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-			return "redirect:/";
+			return "redirect:/board";
 		}
-		
-		return "redirect:/board";
+
+		redirectAttributes.addFlashAttribute("ok", false);
+		redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
+		return "redirect:/";
 	}
 }

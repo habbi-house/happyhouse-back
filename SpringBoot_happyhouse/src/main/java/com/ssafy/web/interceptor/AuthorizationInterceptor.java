@@ -21,16 +21,14 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession(false);
-		if(session != null) {
-			UserVO user = (UserVO)session.getAttribute("user");
-			if(user != null) {
-				Map pathVariables = (Map)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-				if(pathVariables.get("id").equals(user.getNo())) {
+		if (session != null) {
+			UserVO user = (UserVO) session.getAttribute("user");
+			if (user != null) {
+				Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+				if (pathVariables.get("id").equals(user.getNo())) {
 					return true;
 				}
-
 			}
-			
 		}
 
 		FlashMap flashMap = new FlashMap();
@@ -38,7 +36,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		flashMap.put("msg", "접근 권한이 없습니다.");
 		FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
 		flashMapManager.saveOutputFlashMap(flashMap, request, response);
-		
+
 		response.sendRedirect("/");
 		return false;
 	}
