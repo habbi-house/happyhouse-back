@@ -1,5 +1,6 @@
 package com.ssafy.web.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +18,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.web.service.KakaoLogin;
 import com.ssafy.web.service.UserService;
 import com.ssafy.web.vo.UserVO;
 
 @Controller
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 
 	@Autowired
 	UserService userService;
-
+	
+	@Autowired
+	KakaoLogin kakaoLogin;
+	
+	@ResponseBody
+	@GetMapping("/kakao")
+	public HashMap<String, String> kakaoCallback(@RequestParam String code) {
+		String accessToken = kakaoLogin.getKaKaoAccessToken(code);
+		HashMap<String, String> userInfo = kakaoLogin.createKakaoUser(accessToken);
+		System.out.println(userInfo);
+		return userInfo;
+    }
+	
 	@GetMapping("/login")
 	public String login() {
 		return "user/login";

@@ -24,14 +24,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.addPathPatterns("/board/**/update")
 				.addPathPatterns("/board/**/delete")
 				.excludePathPatterns("/user/login")
-				.excludePathPatterns("/user/signIn");
+				.excludePathPatterns("/user/signIn")
+				.excludePathPatterns("/user/kakao");
 		
 		// 사용자가 접근 가능한 자원인지에 대한 권한 체크
 		registry.addInterceptor(new AuthorizationInterceptor())
 			.addPathPatterns("/user/**")
 			.excludePathPatterns("/user/login")
 			.excludePathPatterns("/user/signIn")
-			.excludePathPatterns("/user/logout");
+			.excludePathPatterns("/user/logout")
+			.excludePathPatterns("/user/kakao");
 		
 		// CSRF 토큰 검증
 		registry.addInterceptor(new CSRFInterceptor())
