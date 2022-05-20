@@ -6,8 +6,8 @@
 <mapper namespace="com.ssafy.web.dao.UserDAO">
 	
 	<insert id="createUser" parameterType="userVO">
-		INSERT INTO user (id, password, name, email, phone)
-		VALUES (#{id}, #{password}, #{name}, #{email}, #{phone})
+		INSERT INTO user (id, password, name, email)
+		VALUES (#{id}, #{password}, #{name}, #{email})
 	</insert>
 	
 	<select id="checkId" parameterType="userVO" resultType="_int">
