@@ -25,7 +25,8 @@ public class KakaoLogin {
 	@Autowired
 	ApiKey apiKey;
 	
-	public String getKaKaoAccessToken(String code){
+	public Map<String, String> getKaKaoAccessToken(String code){
+		Map<String, String> tokens = new HashMap<>();
         String access_Token="";
         String refresh_Token ="";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -40,7 +41,7 @@ public class KakaoLogin {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=" + apiKey.getKey());
-            sb.append("&redirect_uri=http://localhost:8888/user/kakao");
+            sb.append("&redirect_uri=http://localhost:8080/kakao");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -61,9 +62,12 @@ public class KakaoLogin {
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-
-            System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+            
+            tokens.put("accessToken", access_Token);
+            tokens.put("refreshToken", refresh_Token);
+            
+            System.out.println("accessToken : " + access_Token);
+            System.out.println("refreshToken : " + refresh_Token);
 
             br.close();
             bw.close();
@@ -71,7 +75,7 @@ public class KakaoLogin {
             e.printStackTrace();
         }
 
-        return access_Token;
+        return tokens;
     }
 	
 	public HashMap<String, String> createKakaoUser(String accessToken) {
@@ -84,11 +88,7 @@ public class KakaoLogin {
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-            for (Map.Entry<String, List<String>> header : conn.getHeaderFields().entrySet()) {
-                for (String value : header.getValue()) {
-                    System.out.println(header.getKey() + " : " + value);
-                }
-            }
+
             int responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
             System.out.println(conn.getResponseMessage());

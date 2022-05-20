@@ -3,6 +3,8 @@ package com.ssafy.web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -35,11 +37,14 @@ public class UserController {
 	
 	@ResponseBody
 	@GetMapping("/kakao")
-	public HashMap<String, String> kakaoCallback(@RequestParam String code) {
-		String accessToken = kakaoLogin.getKaKaoAccessToken(code);
-		HashMap<String, String> userInfo = kakaoLogin.createKakaoUser(accessToken);
-		System.out.println(userInfo);
-		return userInfo;
+	public Map<String, String> kakaoCallback(@RequestParam String code) {
+		Map<String, String> tokens = kakaoLogin.getKaKaoAccessToken(code);
+		Map<String, String> userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
+		Map<String, String> res = new HashMap<>();
+		res.putAll(tokens);
+		res.putAll(userInfo);
+		
+		return res;
     }
 	
 	@GetMapping("/login")
