@@ -61,32 +61,21 @@ public class UserController {
 			userService.createUser(user);
 			return new ResponseEntity<String>("회원 가입 성공", HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>("이미 가입된 회원입니다.", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("이미 가입된 회원입니다.", HttpStatus.UNAUTHORIZED);
 		}
 	}
-//	@GetMapping("/login")
-//	public String login() {
-//		return "user/login";
-//	}
-//
-//	@PostMapping("/login")
-//	public String login(@RequestParam Map<String, String> map, HttpSession session,
-//			RedirectAttributes redirectAttributes) {
-//		UserVO user = userService.getUser(map);
-//		if (user != null) {
-//			session.setAttribute("user", user);
-//
-//			redirectAttributes.addFlashAttribute("ok", true);
-//			redirectAttributes.addFlashAttribute("msg", user.getName() + " 님 안녕하세요.");
-//
-//			return "redirect:/";
-//		}
-//
-//		redirectAttributes.addFlashAttribute("ok", false);
-//		redirectAttributes.addFlashAttribute("msg", "잘못된 아이디 혹은 비밀번호입니다.");
-//
-//		return "redirect:/user/login";
-//	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
+		UserVO user = userService.getUser(map);
+		if (user != null) {
+			// 추후 JWT발급 
+			return new ResponseEntity<String>("로그인 성공", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("아이디와 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED);
+		}
+
+	}
 //
 //	@GetMapping("/logout")
 //	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
