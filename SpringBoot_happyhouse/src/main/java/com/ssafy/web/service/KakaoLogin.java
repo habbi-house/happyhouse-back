@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.web.util.ApiKey;
-
+import com.ssafy.web.vo.UserVO;
 
 import java.util.*;
 
@@ -78,8 +78,8 @@ public class KakaoLogin {
         return tokens;
     }
 	
-	public HashMap<String, String> createKakaoUser(String accessToken) {
-		HashMap<String, String> userInfo = new HashMap<>();
+	public UserVO createKakaoUser(String accessToken) {
+		UserVO userInfo = new UserVO();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         try {
@@ -104,21 +104,27 @@ public class KakaoLogin {
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
-
-            String id = element.getAsJsonObject().get("id").getAsString();
+            String nickname = "";
+            try {
+            	nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+            }catch(Exception e) {            	
+            	nickname = "익명이";
+            }
             boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
             String email = "";
             if(hasEmail){
                 email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+            } else {
+            	email = "anonymous@happyhouse.com";
             }
 
-            System.out.println("id : " + id);
+            System.out.println("nickname : " + nickname);
             System.out.println("email : " + email);
 
             br.close();
             
-            userInfo.put("id", id);
-            userInfo.put("email", email);
+            userInfo.setName(nickname);
+            userInfo.setEmail(email);
             
             return userInfo;
 

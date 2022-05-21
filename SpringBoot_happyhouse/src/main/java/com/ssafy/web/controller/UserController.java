@@ -47,12 +47,12 @@ public class UserController {
 	JwtService jwtService;
 	
 	@GetMapping("/kakao")
-	public Map<String, String> kakaoCallback(@RequestParam String code) {
+	public Map<String, Object> kakaoCallback(@RequestParam String code) {
 		Map<String, String> tokens = kakaoLogin.getKaKaoAccessToken(code);
-		Map<String, String> userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
-		Map<String, String> res = new HashMap<>();
-		res.putAll(tokens);
-		res.putAll(userInfo);
+		UserVO userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
+		Map<String, Object> res = new HashMap<>();
+		res.put("tokens", tokens);
+		res.put("user", userInfo);
 		
 		return res;
     }
