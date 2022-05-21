@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.web.service.JwtService;
+import com.ssafy.web.service.JwtServiceImpl;
 import com.ssafy.web.service.KakaoLogin;
 import com.ssafy.web.service.UserService;
 import com.ssafy.web.vo.PostVO;
@@ -41,6 +43,9 @@ public class UserController {
 	@Autowired
 	KakaoLogin kakaoLogin;
 	
+	@Autowired
+	JwtService jwtService;
+	
 	@GetMapping("/kakao")
 	public Map<String, String> kakaoCallback(@RequestParam String code) {
 		Map<String, String> tokens = kakaoLogin.getKaKaoAccessToken(code);
@@ -52,7 +57,7 @@ public class UserController {
 		return res;
     }
 	
-	@PostMapping("/signUp")
+	@PostMapping("/signup")
 	public ResponseEntity<String> createUser(@RequestBody UserVO user) {
 		System.out.println(user);
 		int cnt = userService.checkId(user);
@@ -69,8 +74,8 @@ public class UserController {
 	public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
 		UserVO user = userService.getUser(map);
 		if (user != null) {
-			// 추후 JWT발급 
-			return new ResponseEntity<String>("로그인 성공", HttpStatus.OK);
+			String token = jwtService.create("user", user, "user");
+			return new ResponseEntity<String>(token, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>("아이디와 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED);
 		}
