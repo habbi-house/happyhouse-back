@@ -14,7 +14,7 @@ public interface UserDAO {
 
 	public void createUser(UserVO user) throws DataAccessException;
 
-	public int checkId(UserVO user) throws DataAccessException;
+	public int checkEmail(UserVO user) throws DataAccessException;
 
 	public UserVO getUser(Map<String, String> map) throws DataAccessException;
 

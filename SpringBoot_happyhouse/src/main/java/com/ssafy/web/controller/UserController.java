@@ -60,7 +60,7 @@ public class UserController {
 	@PostMapping("/signup")
 	public ResponseEntity<String> createUser(@RequestBody UserVO user) {
 		System.out.println(user);
-		int cnt = userService.checkId(user);
+		int cnt = userService.checkEmail(user);
 
 		if (cnt == 0) {
 			userService.createUser(user);
@@ -74,6 +74,7 @@ public class UserController {
 	public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
 		UserVO user = userService.getUser(map);
 		if (user != null) {
+			user.setPassword("");
 			String token = jwtService.create("user", user, "user");
 			return new ResponseEntity<String>(token, HttpStatus.OK);
 		} else {

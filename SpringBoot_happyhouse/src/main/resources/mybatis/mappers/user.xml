@@ -6,20 +6,20 @@
 <mapper namespace="com.ssafy.web.dao.UserDAO">
 	
 	<insert id="createUser" parameterType="userVO">
-		INSERT INTO user (id, password, name, email)
-		VALUES (#{id}, #{password}, #{name}, #{email})
+		INSERT INTO user (password, name, email)
+		VALUES (#{password}, #{name}, #{email})
 	</insert>
 	
-	<select id="checkId" parameterType="userVO" resultType="_int">
+	<select id="checkEmail" parameterType="userVO" resultType="_int">
 		SELECT count(*)
 		FROM user
-		WHERE id=#{id}
+		WHERE email=#{email}
 	</select>
 	
 	<select id="getUser" parameterType="map" resultType="userVO">
 		SELECT *
 		FROM user
-		WHERE id=#{id} AND password=#{password}
+		WHERE email=#{email} AND password=#{password}
 	</select>
 	
 	<select id="getUserByNo" parameterType="int" resultType="userVO">
@@ -30,7 +30,7 @@
 	
 	<update id="updateUser" parameterType="userVO">
 		UPDATE user
-		SET id=#{id}, password=#{password}, name=#{name}, email=#{email}, phone=#{phone}
+		SET password=#{password}, name=#{name}, email=#{email}, phone=#{phone}
 		WHERE no=#{no}
 	</update>
 	
