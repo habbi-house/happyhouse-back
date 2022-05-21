@@ -50,9 +50,10 @@ public class UserController {
 	public Map<String, Object> kakaoCallback(@RequestParam String code) {
 		Map<String, String> tokens = kakaoLogin.getKaKaoAccessToken(code);
 		UserVO userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
+		String token = jwtService.create("user", userInfo, "user");
 		Map<String, Object> res = new HashMap<>();
 		res.put("tokens", tokens);
-		res.put("user", userInfo);
+		res.put("token", token);
 		
 		return res;
     }
