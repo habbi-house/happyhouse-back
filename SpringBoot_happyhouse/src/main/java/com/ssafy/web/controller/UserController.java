@@ -95,6 +95,19 @@ public class UserController {
 			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
 		}
 	}
+	
+	@PostMapping("/update")
+	public ResponseEntity<UserVO> updateUser(@RequestBody UserVO user) {
+		if(Long.parseLong(user.getNo()) == jwtService.getMemberNo()) {
+			userService.updateUser(user);
+			user.setPassword("");
+			// 유저의 정보를 참조하고 있는 테이블도 업데이트해줘야 한다.
+			return new ResponseEntity<UserVO>(user, HttpStatus.OK);			
+		} else {
+			return new ResponseEntity<UserVO>(new UserVO(), HttpStatus.UNAUTHORIZED);
+		}
+		
+	}
 //
 //	@GetMapping("/logout")
 //	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -119,16 +132,5 @@ public class UserController {
 //		return mav;
 //	}
 //
-//	@PostMapping("/{id}/update")
-//	@ResponseBody
-//	public String updateUser(@PathVariable("id") int no, UserVO newUser) {
-//		userService.updateUser(newUser);
-//
-//		JSONObject json = new JSONObject();
-//		json.put("ok", true);
-//		json.put("msg", "회원 정보 수정 성공");
-//
-//		return json.toString();
-//	}
 //
 }
