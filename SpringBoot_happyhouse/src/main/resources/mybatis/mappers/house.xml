@@ -4,8 +4,30 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="com.ssafy.web.dao.HouseDAO">
+
+	<select id="getBaseAddress" resultType="addressVO">
+		SELECT * FROM dongcode
+	</select>
+<!-- 	
+	<select id="getDongcode" parameterType="addressVO" resultType="string">
+		SELECT dongCode
+		FROM dongcode
+		WHERE sidoName=#{sidoName} AND gugunName=#{gugunName} AND dongName=#{dongName}
+	</select> -->
+	
+	<select id="getAllHousesByDong" parameterType="string" resultType="houseInfoVO">
+		SELECT *
+		FROM houseinfo
+		WHERE dongCode=#{dongCode} 
+	</select>
 	
 	<select id="getHouseDealList" parameterType="string" resultType="houseDealVO">
+		SELECT *
+		FROM housedeal
+		WHERE aptCode=#{aptCode}
+	</select>
+	
+<!-- 	<select id="getHouseDealList" parameterType="string" resultType="houseDealVO">
 		select h.aptCode, h.aptName, h.buildyear as builtYear, h.dongCode, h.dongName as dong, h.jibun as areaNumber, h.lat, h.lng, si.sidoname, gu.gugunname, hd.dealAmount, hd.area, hd.dealYear, hd.dealMonth, hd.dealDay, hd.floor
 			from houseinfo h
 			left join sidocode si
@@ -16,6 +38,6 @@
 	        on hd.aptcode = h.aptcode
 			where dongName = #{dong}
 			order by aptName;
-	</select>
+	</select> -->
 	
 </mapper>
