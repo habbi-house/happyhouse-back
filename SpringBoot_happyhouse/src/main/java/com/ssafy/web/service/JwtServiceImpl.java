@@ -81,6 +81,12 @@ public class JwtServiceImpl implements JwtService{
         Integer memberId = (Integer) this.get("user").get("id");
 		return new Long(memberId);
 	}
+	
+	@Override
+	public long getMemberNo() {
+        Integer memberNo = Integer.parseInt((String)this.get("user").get("no"));
+		return new Long(memberNo);
+	}
 
 	@Override
 	public boolean isUsable(String jwt) {

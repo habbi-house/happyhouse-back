@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -83,6 +84,17 @@ public class UserController {
 		}
 
 	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<String> deleteUser(@RequestBody int no) {
+		if(no == jwtService.getMemberNo()) {
+			userService.deleteUser(no);
+			// 유저의 정보를 참조하고 있는 테이블도 삭제해줘야 한다.
+			return new ResponseEntity<String>("정상적으로 탈퇴되었습니다.",HttpStatus.OK);			
+		} else {
+			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
+		}
+	}
 //
 //	@GetMapping("/logout")
 //	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -119,14 +131,4 @@ public class UserController {
 //		return json.toString();
 //	}
 //
-//	@GetMapping("/{id}/delete")
-//	public String deleteUser(@PathVariable("id") int no, HttpSession session, RedirectAttributes redirectAttributes) {
-//		userService.deleteUser(no);
-//		session.invalidate();
-//
-//		redirectAttributes.addFlashAttribute("ok", true);
-//		redirectAttributes.addFlashAttribute("msg", "회원 탈퇴 성공");
-//
-//		return "redirect:/";
-//	}
 }
