@@ -108,6 +108,19 @@ public class UserController {
 		}
 		
 	}
+	
+	@GetMapping("/{no}")
+	public ResponseEntity<UserVO> userInfoByNo(@PathVariable("no") int no) {
+		UserVO user = new UserVO();
+		if(no == jwtService.getMemberNo()) {
+			user = userService.getUserByNo(no);
+			user.setPassword("");
+			return new ResponseEntity<UserVO>(user, HttpStatus.OK);			
+		} else {
+			return new ResponseEntity<UserVO>(user, HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
 //
 //	@GetMapping("/logout")
 //	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -121,16 +134,6 @@ public class UserController {
 //
 //
 //
-//	@GetMapping("/{id}")
-//	public ModelAndView myPage(@PathVariable("id") int no, HttpSession session, RedirectAttributes redirectAttributes) {
-//		ModelAndView mav = new ModelAndView();
-//		UserVO user = userService.getUserByNo(no);
-//		
-//		mav.addObject("user", user);
-//		mav.setViewName("user/mypage");
-//
-//		return mav;
-//	}
 //
 //
 }
