@@ -99,6 +99,10 @@ public class UserController {
 	@PostMapping("/update")
 	public ResponseEntity<UserVO> updateUser(@RequestBody UserVO user) {
 		if(Long.parseLong(user.getNo()) == jwtService.getMemberNo()) {
+			if(user.getPassword().equals("")) {
+				String password = userService.getUserByNo(Integer.parseInt(user.getNo())).getPassword();
+				user.setPassword(password);
+			}
 			userService.updateUser(user);
 			user.setPassword("");
 			// 유저의 정보를 참조하고 있는 테이블도 업데이트해줘야 한다.
@@ -110,7 +114,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{no}")
-	public ResponseEntity<UserVO> userInfoByNo(@PathVariable("no") int no) {
+	public ResponseEntity<UserVO> getUserByNo(@PathVariable("no") int no) {
 		UserVO user = new UserVO();
 		if(no == jwtService.getMemberNo()) {
 			user = userService.getUserByNo(no);
