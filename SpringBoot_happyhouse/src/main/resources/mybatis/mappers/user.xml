@@ -30,7 +30,7 @@
 	
 	<update id="updateUser" parameterType="userVO">
 		UPDATE user
-		SET password=#{password}, name=#{name}, email=#{email}, phone=#{phone}
+		SET password=#{password}, name=#{name}
 		WHERE no=#{no}
 	</update>
 	

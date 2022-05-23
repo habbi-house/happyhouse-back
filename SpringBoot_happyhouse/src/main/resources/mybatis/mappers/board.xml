@@ -22,8 +22,8 @@
  	</select>
  	 	
  	<insert id="createPost" parameterType="postVO"> 		
- 		INSERT INTO board (originNo, groupOrd, groupLayer, title, content, writer, reg_datetime)
- 		VALUES (#{originNo}, #{groupOrd}, #{groupLayer}, #{title}, #{content}, #{writer}, now())
+ 		INSERT INTO board (originNo, groupOrd, groupLayer, title, content, writer, reg_datetime, email)
+ 		VALUES (#{originNo}, #{groupOrd}, #{groupLayer}, #{title}, #{content}, #{writer}, now(), #{email})
  		 		
  		<selectKey resultType="int" keyProperty="code" order="AFTER">
  			SELECT last_insert_id()
