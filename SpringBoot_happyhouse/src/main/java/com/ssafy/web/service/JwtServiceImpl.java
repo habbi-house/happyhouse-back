@@ -89,6 +89,11 @@ public class JwtServiceImpl implements JwtService{
 	}
 
 	@Override
+	public String getMemberEmail() {
+		return (String)this.get("user").get("email");
+	}
+	
+	@Override
 	public boolean isUsable(String jwt) {
 		try{
 			Jws<Claims> claims = Jwts.parser()
@@ -110,4 +115,5 @@ public class JwtServiceImpl implements JwtService{
 			 
 		}
 	}
+
 }

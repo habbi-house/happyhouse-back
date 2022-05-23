@@ -22,6 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.web.service.BoardService;
+import com.ssafy.web.service.JwtService;
 import com.ssafy.web.vo.PostVO;
 import com.ssafy.web.vo.UserVO;
 
@@ -36,6 +37,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private JwtService jwtService;
+	
 	@GetMapping("")
 	public ResponseEntity<List<PostVO>> getAllPosts() {
 		List<PostVO> postList = boardService.getAllPosts();
@@ -50,37 +54,47 @@ public class BoardController {
 
 	@PostMapping("/create")
 	public ResponseEntity<String> createPost(@RequestBody PostVO post) {
-		int originNo = post.getOriginNo();
-
-		if (originNo > 0) { // 답글 작성하기
-			int groupOrd = boardService.getLastGroupOrd(post);
-			post.setGroupOrd(groupOrd + 1);
-		} else { // 원글 작성하기
-			// OriginNo 값 저장
-			Integer lastOriginNo = boardService.getLastOriginNo();
-			post.setOriginNo(lastOriginNo == null ? 1 : lastOriginNo + 1);
+		if(post.getEmail().equals(jwtService.getMemberEmail())) {
+			int originNo = post.getOriginNo();
+			
+			if (originNo > 0) { // 답글 작성하기
+				int groupOrd = boardService.getLastGroupOrd(post);
+				post.setGroupOrd(groupOrd + 1);
+			} else { // 원글 작성하기
+				// OriginNo 값 저장
+				Integer lastOriginNo = boardService.getLastOriginNo();
+				post.setOriginNo(lastOriginNo == null ? 1 : lastOriginNo + 1);
+			}
+			
+			int code = boardService.createPost(post);
+			
+			return new ResponseEntity<String>("글 작성 성공", HttpStatus.OK);			
+		} else {
+			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
 		}
-
-		int code = boardService.createPost(post);
-
-		return new ResponseEntity<String>("글 작성 성공", HttpStatus.OK);
-
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<String> updatePost(@RequestBody PostVO newPost) {
-
-		boardService.updatePost(newPost);
+		if(newPost.getEmail().equals(jwtService.getMemberEmail())) {
+			boardService.updatePost(newPost);
 		
-		return new ResponseEntity<String>("글 수정 성공", HttpStatus.OK);
+			return new ResponseEntity<String>("글 수정 성공", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
+		}
 	}
 	
 	@PostMapping("/delete")
 	public ResponseEntity<String> deletePost(@RequestBody int code) {
+		PostVO post = boardService.getPost(code);
+		if(post.getEmail().equals(jwtService.getMemberEmail())) {
+			boardService.deletePost(code);
 		
-		boardService.deletePost(code);
-		
-		return new ResponseEntity<String>("글 삭제 성공", HttpStatus.OK);
+			return new ResponseEntity<String>("글 삭제 성공", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
+		}
 	}
 	
 //	@GetMapping("/create")

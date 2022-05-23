@@ -7,6 +7,7 @@ public interface JwtService {
     Map<String, Object> get(String key);
     long getMemberId();
     long getMemberNo();
+    String getMemberEmail();
     boolean isUsable(String jwt);
     
 }
