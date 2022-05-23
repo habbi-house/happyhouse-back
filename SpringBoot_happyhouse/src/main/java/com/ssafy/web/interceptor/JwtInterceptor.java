@@ -11,34 +11,40 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.ssafy.web.exception.UnauthorizedException;
 import com.ssafy.web.service.JwtService;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    private static final String HEADER_AUTH = "Authorization";
+	private static final String HEADER_AUTH = "Authorization";
 
-    @Autowired
-    private JwtService jwtService;
+	@Autowired
+	private JwtService jwtService;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
-//    	Enumeration e = request.getHeaderNames();
-//    	while(e.hasMoreElements()) {
-//    		String rName = (String)e.nextElement();
-//    		String rVal = request.getHeader(rName);
-//    		System.out.println(rName + "==" + rVal);
-//    	}
-    	// axios의 Preflight OPTION요청을 거르기 위함
-    	if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-            return true;
-        }
-    	
-    	System.out.println(request.getHeader("HEADER_AUTH"));
-        final String token = request.getHeader(HEADER_AUTH).split(" ")[1];
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		// axios의 Preflight OPTION요청을 거르기 위함
+		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+			return true;
+		}
 
-        if(token != null && jwtService.isUsable(token)){
-            return true;
-        } else {
-            throw new UnauthorizedException();
-        }
-    }
+		final String token = request.getHeader(HEADER_AUTH).split(" ")[1];
+
+		try {
+			if (token != null && jwtService.isUsable(token)) {
+				return true;
+			} else {
+				throw new UnauthorizedException();
+			}
+		} catch(ExpiredJwtException e) {
+			response.sendError(444, "기존 토큰이 만료되었습니다. 해당 토큰을 가지고 get-newtoken링크로 이동해주세요.");
+		} catch(Exception e) {
+			response.sendError(445, "모든 토큰이 만료되었습니다. 다시 로그인해주세요.");
+		}
+		
+		return false;
+	}
 }

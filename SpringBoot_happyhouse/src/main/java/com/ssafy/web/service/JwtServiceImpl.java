@@ -14,9 +14,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.ssafy.web.exception.UnauthorizedException;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 
 @Service("jwtService")
@@ -84,17 +88,29 @@ public class JwtServiceImpl implements JwtService{
 			Jws<Claims> claims = Jwts.parser()
 					  .setSigningKey(this.generateKey())
 					  .parseClaimsJws(jwt);
-			return true;
-			
-		}catch (Exception e) {
-			
-			e.printStackTrace();
-			throw new UnauthorizedException();
-
-			//개발환경!!!
-			//return false;
-			 
+		} catch(ExpiredJwtException e) {
+			// 유효기간 초과
+			System.out.println(e.getMessage());
+			throw e;
+		} catch(UnsupportedJwtException e) {
+			// 형식이 일치하지 않는 JWT
+			System.out.println(e.getMessage());
+			throw e;
+		} catch(MalformedJwtException e) {
+			// JWT가 올바르게 구성되지 않았을 경우
+			System.out.println(e.getMessage());
+			throw e;
+		} catch(SignatureException e) {
+			// 기존 서명을 확인하지 못한 경우
+			System.out.println(e.getMessage());
+			throw e;
+		} catch(IllegalArgumentException e) {
+			// claims가 비어있는 경우
+			System.out.println(e.getMessage());
+			throw e;
 		}
+		
+		return true;
 	}
 
 }
