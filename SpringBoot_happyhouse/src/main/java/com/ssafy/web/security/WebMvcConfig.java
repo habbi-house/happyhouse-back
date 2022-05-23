@@ -1,5 +1,6 @@
 package com.ssafy.web.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import com.ssafy.web.interceptor.AuthenticationInterceptor;
 import com.ssafy.web.interceptor.AuthorizationInterceptor;
 import com.ssafy.web.interceptor.CSRFInterceptor;
+import com.ssafy.web.interceptor.JwtInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -18,20 +20,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	        "/user/signup",
 	        "/user/login",
 	        "/user/kakao",
-//	        "/board/**",
-//	        "/search/**",
+	        "/board",
+	        "/board/{id}",
+	        "/search/**",
 	        "/error"
 	    };
 	 
-//	    @Autowired
-//	    private JwtInterceptor jwtInterceptor;
-//	 
-//	    @Override
-//	    public void addInterceptors(InterceptorRegistry registry) {
-//	        registry.addInterceptor(jwtInterceptor)
-//	                        .addPathPatterns("/**")
-//	                        .excludePathPatterns(EXCLUDE_PATHS);
-//	    }
+	    @Autowired
+	    private JwtInterceptor jwtInterceptor;
+	 
+	    @Override
+	    public void addInterceptors(InterceptorRegistry registry) {
+	        registry.addInterceptor(jwtInterceptor)
+	                        .addPathPatterns("/**")
+	                        .excludePathPatterns(EXCLUDE_PATHS);
+	    }
+	    
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {
 //		

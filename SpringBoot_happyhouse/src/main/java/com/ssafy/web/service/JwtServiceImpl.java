@@ -17,9 +17,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService{
  
@@ -43,11 +42,7 @@ public class JwtServiceImpl implements JwtService{
         try {
             key = SALT.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            if(log.isInfoEnabled()){
-                e.printStackTrace();
-            }else{
-                log.error("Making JWT Key Error ::: {}", e.getMessage());
-            }
+            e.printStackTrace();
         }
          
         return key;
@@ -63,23 +58,13 @@ public class JwtServiceImpl implements JwtService{
 						 .setSigningKey(SALT.getBytes("UTF-8"))
 						 .parseClaimsJws(jwt);
 		} catch (Exception e) {
-			if(log.isInfoEnabled()){
-				e.printStackTrace();
-			}else{
-				log.error(e.getMessage());
-			}
+			e.printStackTrace();
 			throw new UnauthorizedException();
 		}
 		@SuppressWarnings("unchecked")
         Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get(key);
         System.out.println(value);
 		return value;
-	}
-
-	@Override
-	public long getMemberId() {
-        Integer memberId = (Integer) this.get("user").get("id");
-		return new Long(memberId);
 	}
 	
 	@Override
@@ -103,15 +88,11 @@ public class JwtServiceImpl implements JwtService{
 			
 		}catch (Exception e) {
 			
-			if(log.isInfoEnabled()){
-				e.printStackTrace();
-			}else{
-				log.error(e.getMessage());
-			}
+			e.printStackTrace();
 			throw new UnauthorizedException();
 
-			/*개발환경!!!
-			 * return false;*/
+			//개발환경!!!
+			//return false;
 			 
 		}
 	}
