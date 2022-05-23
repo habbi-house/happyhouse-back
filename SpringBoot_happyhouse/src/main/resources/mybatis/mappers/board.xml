@@ -6,7 +6,7 @@
  <mapper namespace="com.ssafy.web.dao.BoardDAO">
  
  	<select id="getAllPosts" resultType="postVO">
- 		SELECT *
+ 		SELECT code, originNo, groupOrd, groupLayer, concat(LPAD('' , groupLayer * 4,'RE: ' ) ,title) as title , content, writer, reg_datetime, email
  		FROM board
  		ORDER BY originNo DESC, groupLayer ASC, groupOrd ASC;
  	</select>

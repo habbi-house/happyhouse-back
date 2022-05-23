@@ -60,6 +60,7 @@ public class BoardController {
 			if (originNo > 0) { // 답글 작성하기
 				int groupOrd = boardService.getLastGroupOrd(post);
 				post.setGroupOrd(groupOrd + 1);
+				post.setGroupLayer(post.getGroupLayer() + 1);
 			} else { // 원글 작성하기
 				// OriginNo 값 저장
 				Integer lastOriginNo = boardService.getLastOriginNo();
