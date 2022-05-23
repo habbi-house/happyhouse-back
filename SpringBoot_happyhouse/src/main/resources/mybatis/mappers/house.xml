@@ -21,7 +21,7 @@
 		WHERE dongCode=#{dongCode} 
 	</select>
 	
-	<select id="getHouseDealList" parameterType="string" resultType="houseDealVO">
+	<select id="getHouseDealList" parameterType="biginteger" resultType="houseDealVO">
 		SELECT *
 		FROM housedeal
 		WHERE aptCode=#{aptCode}

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class HouseDealVO {
-	private int no;
+	private BigInteger no;
 	
 	private String dealAmount;
 	private int dealYear;

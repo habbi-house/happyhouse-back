@@ -1,5 +1,6 @@
 package com.ssafy.web.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,6 @@ public interface HouseDAO {
 
 	List<HouseInfoVO> getAllHousesByDong(String dongCode) throws DataAccessException;
 
-	List<HouseDealVO> getHouseDealList(String aptCode) throws DataAccessException;
+	List<HouseDealVO> getHouseDealList(BigInteger aptCode) throws DataAccessException;
 	
 }

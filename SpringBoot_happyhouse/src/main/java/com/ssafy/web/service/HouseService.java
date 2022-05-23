@@ -1,5 +1,6 @@
 package com.ssafy.web.service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class HouseService {
 		return houseDAO.getBaseAddress();
 	}
 
-	public List<HouseDealVO> getHouseDealList(String aptCode) {
+	public List<HouseDealVO> getHouseDealList(BigInteger aptCode) {
 		return houseDAO.getHouseDealList(aptCode);
 	}
 
