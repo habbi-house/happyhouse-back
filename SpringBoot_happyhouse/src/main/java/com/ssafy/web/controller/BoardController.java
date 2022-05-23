@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,25 @@ public class BoardController {
 		return new ResponseEntity<PostVO>(post, HttpStatus.OK);
 	}
 
+	@PostMapping("/create")
+	public ResponseEntity<String> createPost(@RequestBody PostVO post) {
+		int originNo = post.getOriginNo();
+
+		if (originNo > 0) { // 답글 작성하기
+			int groupOrd = boardService.getLastGroupOrd(post);
+			post.setGroupOrd(groupOrd + 1);
+		} else { // 원글 작성하기
+			// OriginNo 값 저장
+			Integer lastOriginNo = boardService.getLastOriginNo();
+			post.setOriginNo(lastOriginNo == null ? 1 : lastOriginNo + 1);
+		}
+
+		int code = boardService.createPost(post);
+
+		return new ResponseEntity<String>("글 작성 성공", HttpStatus.OK);
+
+	}
+	
 //	@GetMapping("/create")
 //	public ModelAndView createPostView(
 //			@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
@@ -62,31 +82,6 @@ public class BoardController {
 //			mav.addObject("groupLayer", groupLayer);
 //		}
 //		return mav;
-//	}
-
-//	@PostMapping("/create")
-//	public String createPost(PostVO post, HttpSession session, RedirectAttributes redirectAttributes) {
-//		int originNo = post.getOriginNo();
-//
-//		// 작성자 ID 저장
-//		UserVO user = (UserVO) session.getAttribute("user");
-//		post.setWriter(user.getId());
-//
-//		if (originNo > 0) { // 답글 작성하기
-//			int groupOrd = boardService.getLastGroupOrd(post);
-//			post.setGroupOrd(groupOrd + 1);
-//		} else { // 원글 작성하기
-//			// OriginNo 값 저장
-//			Integer lastOriginNo = boardService.getLastOriginNo();
-//			post.setOriginNo(lastOriginNo == null ? 1 : lastOriginNo + 1);
-//		}
-//
-//		int code = boardService.createPost(post);
-//
-//		redirectAttributes.addFlashAttribute("ok", true);
-//		redirectAttributes.addFlashAttribute("msg", "글 등록 성공");
-//		return "redirect:/board/" + code;
-//
 //	}
 //
 //	@GetMapping("/{id}/update")

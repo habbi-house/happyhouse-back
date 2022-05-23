@@ -16,6 +16,9 @@ public class PostVO {
     /** 작성자 **/
     private String writer;
     
+    /** 작성자email **/
+    private String email;
+    
     /** 등록시간 **/
     private String reg_datetime;
     
