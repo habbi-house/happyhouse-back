@@ -67,6 +67,22 @@ public class BoardController {
 
 	}
 	
+	@PostMapping("/update")
+	public ResponseEntity<String> updatePost(@RequestBody PostVO newPost) {
+
+		boardService.updatePost(newPost);
+		
+		return new ResponseEntity<String>("글 수정 성공", HttpStatus.OK);
+	}
+	
+	@PostMapping("/delete")
+	public ResponseEntity<String> deletePost(@RequestBody int code) {
+		
+		boardService.deletePost(code);
+		
+		return new ResponseEntity<String>("글 삭제 성공", HttpStatus.OK);
+	}
+	
 //	@GetMapping("/create")
 //	public ModelAndView createPostView(
 //			@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
@@ -105,41 +121,5 @@ public class BoardController {
 //		return mav;
 //	}
 //
-//	@PostMapping("/{id}/update")
-//	public String updatePost(@PathVariable("id") int code, PostVO newPost, HttpSession session,
-//			RedirectAttributes redirectAttributes) {
-//		UserVO user = (UserVO) session.getAttribute("user");
 //
-//		if (newPost != null && user != null && newPost.getWriter().equals(user.getId())) {
-//			newPost.setCode(code);
-//			boardService.updatePost(newPost);
-//
-//			redirectAttributes.addFlashAttribute("ok", true);
-//			redirectAttributes.addFlashAttribute("msg", "글 수정 성공");
-//
-//			return "redirect:/board/" + code;
-//		}
-//
-//		redirectAttributes.addFlashAttribute("ok", false);
-//		redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-//		return "redirect:/";
-//	}
-//
-//	@PostMapping("/{id}/delete")
-//	public String deletePost(@PathVariable("id") int code, HttpSession session, RedirectAttributes redirectAttributes) {
-//		UserVO user = (UserVO) session.getAttribute("user");
-//		PostVO post = boardService.getPost(code);
-//
-//		if (post != null && user != null && post.getWriter().equals(user.getId())) {
-//			boardService.deletePost(code);
-//
-//			redirectAttributes.addFlashAttribute("ok", true);
-//			redirectAttributes.addFlashAttribute("msg", "글 삭제 성공");
-//			return "redirect:/board";
-//		}
-//
-//		redirectAttributes.addFlashAttribute("ok", false);
-//		redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-//		return "redirect:/";
-//	}
 }
