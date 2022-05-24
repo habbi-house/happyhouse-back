@@ -22,7 +22,7 @@ import com.ssafy.web.vo.HouseInfoVO;
 
 @RestController
 @RequestMapping("/search")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:8080")
 public class HouseController {
 	
 	@Autowired

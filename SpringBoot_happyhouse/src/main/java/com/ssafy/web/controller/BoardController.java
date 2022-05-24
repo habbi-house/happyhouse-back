@@ -28,7 +28,7 @@ import com.ssafy.web.vo.UserVO;
 
 @RestController
 @RequestMapping("/board")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:8080")
 public class BoardController {
 
 	private static final String SUCCESS = "success";

@@ -22,7 +22,7 @@ import com.ssafy.web.vo.UserVO;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:8080")
 public class UserController {
 
 	@Autowired
@@ -61,6 +61,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
+		
 		UserVO user = userService.getUser(map);
 		if (user != null) {
 			user.setPassword("");
