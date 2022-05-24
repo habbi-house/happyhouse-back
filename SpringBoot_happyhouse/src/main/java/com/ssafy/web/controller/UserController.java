@@ -117,6 +117,7 @@ public class UserController {
 
 	@GetMapping("/refresh")
 	public ResponseEntity<String> refreshUser(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("refresh호출됨");
 		Cookie[] cookies = request.getCookies();
 		String accessToken = null;
 		String refreshToken = null;
@@ -199,6 +200,11 @@ public class UserController {
 		refreshCookie.setPath("/");
 		response.addCookie(refreshCookie);
 		
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/ping")
+	public ResponseEntity<Void> ping(){
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

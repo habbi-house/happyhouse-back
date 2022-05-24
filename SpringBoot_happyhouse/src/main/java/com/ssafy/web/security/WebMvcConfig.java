@@ -18,7 +18,11 @@ import com.ssafy.web.interceptor.JwtInterceptor;
 public class WebMvcConfig implements WebMvcConfigurer {
 	
 	private static final String[] EXCLUDE_PATHS = {
-	        "/user/**",
+	        "/user",
+	        "/user/login",
+	        "/user/signup",
+	        "/user/kakao",
+	        "/user/logout/",
 	        "/board",
 	        "/board/{id}",
 	        "/search/**",

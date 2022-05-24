@@ -36,7 +36,7 @@ public class JwtServiceImpl implements JwtService{
                          .setIssuedAt(now)
                          .setSubject(subject)
                          .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 2))
-//                         .setExpiration(new Date(0))
+//                         .setExpiration(new Date(System.currentTimeMillis() + 5000))
                          .claim(key, data)
                          .signWith(SignatureAlgorithm.HS256, this.generateKey())
                          .compact();
@@ -49,6 +49,7 @@ public class JwtServiceImpl implements JwtService{
         String jwt = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 20))
+//                .setExpiration(new Date(System.currentTimeMillis() + 5000))
                 .signWith(SignatureAlgorithm.HS256, this.generateKey())
                 .compact();
         return jwt;
@@ -74,7 +75,10 @@ public class JwtServiceImpl implements JwtService{
 			claims = Jwts.parser()
 						 .setSigningKey(SALT.getBytes("UTF-8"))
 						 .parseClaimsJws(jwt);
-		} catch (Exception e) {
+		} catch (ExpiredJwtException e) {
+			throw e;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			throw new UnauthorizedException();
 		}
