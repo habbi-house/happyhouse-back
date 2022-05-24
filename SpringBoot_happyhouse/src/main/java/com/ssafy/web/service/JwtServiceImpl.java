@@ -30,17 +30,30 @@ public class JwtServiceImpl implements JwtService{
      
     @Override
     public <T> String create(String key, T data, String subject){
+    	Date now = new Date();
         String jwt = Jwts.builder()
                          .setHeaderParam("typ", "JWT")
-                         .setHeaderParam("regDate", System.currentTimeMillis())
+                         .setIssuedAt(now)
                          .setSubject(subject)
                          .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 2))
+//                         .setExpiration(new Date(0))
                          .claim(key, data)
                          .signWith(SignatureAlgorithm.HS256, this.generateKey())
                          .compact();
         return jwt;
     }   
  
+    @Override
+    public String createRefreshToken() {
+        Date now = new Date();
+        String jwt = Jwts.builder()
+                .setIssuedAt(now)
+                .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 20))
+                .signWith(SignatureAlgorithm.HS256, this.generateKey())
+                .compact();
+        return jwt;
+    }
+    
     private byte[] generateKey(){
         byte[] key = null;
         try {
@@ -72,8 +85,29 @@ public class JwtServiceImpl implements JwtService{
 	}
 	
 	@Override
+	public Map<String, Object> getMember(String jwt) {
+		Jws<Claims> claims = null;
+		try {
+			claims = Jwts.parser()
+						 .setSigningKey(SALT.getBytes("UTF-8"))
+						 .parseClaimsJws(jwt);
+		} catch (ExpiredJwtException e) {
+			System.out.println(e.getClaims().get("user"));
+			return (Map<String, Object>)e.getClaims().get("user");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new UnauthorizedException();
+		}
+		@SuppressWarnings("unchecked")
+        Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get("user");
+        System.out.println(value);
+		return value;
+	}
+	
+	@Override
 	public long getMemberNo() {
-        Integer memberNo = Integer.parseInt((String)this.get("user").get("no"));
+        Integer memberNo = Integer.parseInt((String)this.get("user").get("userNo"));
 		return new Long(memberNo);
 	}
 

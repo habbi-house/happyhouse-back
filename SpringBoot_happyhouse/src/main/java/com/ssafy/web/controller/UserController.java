@@ -3,6 +3,10 @@ package com.ssafy.web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,25 +31,43 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	KakaoLogin kakaoLogin;
-	
+
 	@Autowired
 	JwtService jwtService;
-	
+
 	@GetMapping("/kakao")
-	public Map<String, Object> kakaoCallback(@RequestParam String code) {
+	public ResponseEntity<String> kakaoCallback(@RequestParam String code, HttpServletResponse response) {
+		// 카카오 서비스를 이용하려면 tokens를 저장할 필요가 있다.
 		Map<String, String> tokens = kakaoLogin.getKaKaoAccessToken(code);
-		UserVO userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
-		String token = jwtService.create("user", userInfo, "user");
-		Map<String, Object> res = new HashMap<>();
-		res.put("tokens", tokens);
-		res.put("token", token);
+		Map<String, String> userInfo = kakaoLogin.createKakaoUser(tokens.get("accessToken"));
 		
-		return res;
-    }
-	
+		String refreshToken = jwtService.createRefreshToken();
+		Cookie cookie = new Cookie("refreshToken", refreshToken);
+		cookie.setMaxAge(86400 * 1000);
+		cookie.setSecure(true);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		// DB에 토큰저장하고 그 idx를 가져옴
+		int tokenIdx = 666;
+		userInfo.put("tokenIdx", Integer.toString(tokenIdx));
+
+		String accessToken = jwtService.create("user", userInfo, "user");
+		Cookie accessCookie = new Cookie("accessToken", accessToken);
+		accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
+		accessCookie.setSecure(true);
+		accessCookie.setHttpOnly(true);
+		accessCookie.setPath("/");
+		response.addCookie(accessCookie);
+		
+		String token = jwtService.create("user", userInfo, "user");
+
+		return new ResponseEntity<String>(token, HttpStatus.OK);
+	}
+
 	@PostMapping("/signup")
 	public ResponseEntity<String> createUser(@RequestBody UserVO user) {
 		System.out.println(user);
@@ -60,72 +82,124 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
-		
+	public ResponseEntity<String> login(@RequestBody Map<String, String> map, HttpServletResponse response) {
 		UserVO user = userService.getUser(map);
 		if (user != null) {
-			user.setPassword("");
-			String token = jwtService.create("user", user, "user");
-			return new ResponseEntity<String>(token, HttpStatus.OK);
+
+			String refreshToken = jwtService.createRefreshToken();
+			Cookie cookie = new Cookie("refreshToken", refreshToken);
+			cookie.setMaxAge((int)System.currentTimeMillis() * 86400 * 1000);
+			cookie.setSecure(true);
+			cookie.setHttpOnly(true);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			// DB에 토큰저장하고 그 idx를 가져옴
+			int tokenIdx = 555;
+			Map<String, String> userInfo = new HashMap<>();
+			userInfo.put("userNo", user.getNo());
+			userInfo.put("email", user.getEmail());
+			userInfo.put("tokenIdx", Integer.toString(tokenIdx));
+
+			String accessToken = jwtService.create("user", userInfo, "user");
+			Cookie accessCookie = new Cookie("accessToken", accessToken);
+			accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
+			accessCookie.setSecure(true);
+			accessCookie.setHttpOnly(true);
+			accessCookie.setPath("/");
+			response.addCookie(accessCookie);
+
+			return new ResponseEntity<String>(accessToken, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>("아이디와 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED);
 		}
 
 	}
-	
+
+	@GetMapping("/refresh")
+	public ResponseEntity<String> refreshUser(HttpServletRequest request, HttpServletResponse response) {
+		Cookie[] cookies = request.getCookies();
+		String accessToken = null;
+		String refreshToken = null;
+		if(cookies == null) {
+			return new ResponseEntity<String>("로그인 해주세요", HttpStatus.UNAUTHORIZED);
+		}
+		for (Cookie c : cookies) {
+			if ("accessToken".equals(c.getName())) {
+				accessToken = c.getValue();
+			} else if ("refreshToken".equals(c.getName())) {
+				refreshToken = c.getValue();
+			}
+		}
+		if (refreshToken != null && jwtService.isUsable(refreshToken)) {
+			accessToken = jwtService.create("user", jwtService.getMember(accessToken), "user");
+			// DB에 토큰을 다시 갱신
+			Cookie accessCookie = new Cookie("accessToken", accessToken);
+			accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
+			accessCookie.setSecure(true);
+			accessCookie.setHttpOnly(true);
+			accessCookie.setPath("/");
+			response.addCookie(accessCookie);
+
+			return new ResponseEntity<String>(accessToken, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
+		}
+	}
+
 	@PostMapping("/delete")
 	public ResponseEntity<String> deleteUser(@RequestBody int no) {
-		if(no == jwtService.getMemberNo()) {
+		if (no == jwtService.getMemberNo()) {
 			userService.deleteUser(no);
-			// 유저의 정보를 참조하고 있는 테이블도 삭제해줘야 한다.
-			return new ResponseEntity<String>("정상적으로 탈퇴되었습니다.",HttpStatus.OK);			
+			return new ResponseEntity<String>("정상적으로 탈퇴되었습니다.", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>("정상적이지 않은 요청입니다.", HttpStatus.UNAUTHORIZED);
 		}
 	}
-	
+
 	@PostMapping("/update")
 	public ResponseEntity<UserVO> updateUser(@RequestBody UserVO user) {
-		if(Long.parseLong(user.getNo()) == jwtService.getMemberNo()) {
-			if(user.getPassword().equals("")) {
+		if (Long.parseLong(user.getNo()) == jwtService.getMemberNo()) {
+			if (user.getPassword().equals("")) {
 				String password = userService.getUserByNo(Integer.parseInt(user.getNo())).getPassword();
 				user.setPassword(password);
 			}
 			userService.updateUser(user);
 			user.setPassword("");
 			// 유저의 정보를 참조하고 있는 테이블도 업데이트해줘야 한다.
-			return new ResponseEntity<UserVO>(user, HttpStatus.OK);			
+			return new ResponseEntity<UserVO>(user, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<UserVO>(new UserVO(), HttpStatus.UNAUTHORIZED);
 		}
-		
+
 	}
-	
+
 	@GetMapping("/{no}")
 	public ResponseEntity<UserVO> getUserByNo(@PathVariable("no") int no) {
 		UserVO user = new UserVO();
-		if(no == jwtService.getMemberNo()) {
+		if (no == jwtService.getMemberNo()) {
 			user = userService.getUserByNo(no);
 			user.setPassword("");
-			return new ResponseEntity<UserVO>(user, HttpStatus.OK);			
+			return new ResponseEntity<UserVO>(user, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<UserVO>(user, HttpStatus.UNAUTHORIZED);
 		}
 	}
-	
-//
-//	@GetMapping("/logout")
-//	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
-//		session.invalidate();
-//
-//		redirectAttributes.addFlashAttribute("ok", true);
-//		redirectAttributes.addFlashAttribute("msg", "로그아웃 되었습니다.");
-//
-//		return "redirect:/";
-//	}
-//
-//
-//
-//
-//
+
+	@GetMapping("/logout")
+	public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+		//DB삭제도 해야
+
+		Cookie accessCookie = new Cookie("accessToken", null);
+		accessCookie.setMaxAge(0);
+		accessCookie.setPath("/");
+		response.addCookie(accessCookie);
+		
+		Cookie refreshCookie = new Cookie("refreshToken", null);
+		refreshCookie.setMaxAge(0);
+		refreshCookie.setPath("/");
+		response.addCookie(refreshCookie);
+		
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
 }

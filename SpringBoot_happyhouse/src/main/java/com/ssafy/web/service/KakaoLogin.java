@@ -78,8 +78,8 @@ public class KakaoLogin {
         return tokens;
     }
 	
-	public UserVO createKakaoUser(String accessToken) {
-		UserVO userInfo = new UserVO();
+	public Map<String, String> createKakaoUser(String accessToken) {
+		Map<String, String> userInfo = new HashMap<String, String>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         try {
@@ -118,13 +118,13 @@ public class KakaoLogin {
             	email = "anonymous@happyhouse.com";
             }
 
-            System.out.println("nickname : " + nickname);
+            System.out.println("name : " + nickname);
             System.out.println("email : " + email);
 
             br.close();
             
-            userInfo.setName(nickname);
-            userInfo.setEmail(email);
+            userInfo.put("name", nickname);
+            userInfo.put("email", email);
             
             return userInfo;
 
