@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
 
 @Mapper
@@ -23,5 +24,11 @@ public interface UserDAO {
 	public void updateUser(UserVO user) throws DataAccessException;
 
 	public void deleteUser(int no) throws DataAccessException;
+	
+	public TokenVO getToken(int no) throws DataAccessException;
+	
+	public int addToken(TokenVO tokenVo) throws DataAccessException;
+	
+	public void deleteToken(int no) throws DataAccessException;
 
 }

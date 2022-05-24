@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.web.dao.UserDAO;
+import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
 
 @Service
@@ -37,4 +38,17 @@ public class UserService {
 	public void deleteUser(int no) {
 		userDAO.deleteUser(no);
 	}
+	
+	public TokenVO getToken(int no) {
+		return userDAO.getToken(no);
+	}
+	
+	public int addToken(TokenVO tokenVo) {
+		return userDAO.addToken(tokenVo);
+	}
+	
+	public void deleteToken(int no) {
+		userDAO.deleteToken(no);
+	}
+	
 }

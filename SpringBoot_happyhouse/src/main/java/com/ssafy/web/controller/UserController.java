@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.web.service.JwtService;
 import com.ssafy.web.service.KakaoLogin;
 import com.ssafy.web.service.UserService;
+import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
 
 @RestController
@@ -51,8 +52,11 @@ public class UserController {
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
 		response.addCookie(cookie);
-		// DB에 토큰저장하고 그 idx를 가져옴
-		int tokenIdx = 666;
+		
+		TokenVO tokenVo = new TokenVO();
+		tokenVo.setEmail(userInfo.get("email"));
+		tokenVo.setRefreshToken(refreshToken);
+		int tokenIdx = userService.addToken(tokenVo);
 		userInfo.put("tokenIdx", Integer.toString(tokenIdx));
 
 		String accessToken = jwtService.create("user", userInfo, "user");
@@ -93,9 +97,14 @@ public class UserController {
 			cookie.setHttpOnly(true);
 			cookie.setPath("/");
 			response.addCookie(cookie);
-			// DB에 토큰저장하고 그 idx를 가져옴
-			int tokenIdx = 555;
+			
+			TokenVO tokenVo = new TokenVO();
+			tokenVo.setEmail(user.getEmail());
+			tokenVo.setRefreshToken(refreshToken);
+			int tokenIdx = userService.addToken(tokenVo);
+			
 			Map<String, String> userInfo = new HashMap<>();
+			userInfo.put("tokenIdx", Integer.toString(tokenIdx));
 			userInfo.put("userNo", user.getNo());
 			userInfo.put("email", user.getEmail());
 			userInfo.put("tokenIdx", Integer.toString(tokenIdx));
@@ -188,8 +197,23 @@ public class UserController {
 
 	@GetMapping("/logout")
 	public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-		//DB삭제도 해야
-
+		
+		String accessToken = null;
+		String bearer = request.getHeader("Authorization");
+		if(bearer != null && !"".equals(bearer)) {
+			accessToken = bearer.split(" ")[1];
+		}
+		Cookie[] cookies = request.getCookies();
+		for (Cookie c : cookies) {
+			if ("accessToken".equals(c.getName())) {
+				accessToken = c.getValue();
+			}
+		}
+		
+		if(accessToken != null && !"".equals(accessToken)) {
+			userService.deleteToken(Integer.parseInt((String)jwtService.getMember(accessToken).get("tokenIdx")));
+		}
+		
 		Cookie accessCookie = new Cookie("accessToken", null);
 		accessCookie.setMaxAge(0);
 		accessCookie.setPath("/");

@@ -39,4 +39,24 @@
 		WHERE no=#{no}
 	</delete>
 	
+	<select id="getToken" parameterType="int" resultType="tokenVo">
+		SELECT *
+		FROM token
+		WHERE no=#{no}
+	</select>
+	
+	<insert id="addToken" parameterType="tokenVo">
+		INSERT INTO token (email, refreshToken)
+		VALUES (#{email}, #{refreshToken})
+		<selectKey resultType="int" keyProperty="no" order="AFTER">
+ 			SELECT last_insert_id()
+ 		</selectKey>
+	</insert>
+	
+	<delete id="deleteToken" parameterType="int">
+		DELETE FROM token
+		WHERE no=#{no}
+	</delete>
+	
+	
 </mapper>

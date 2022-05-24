@@ -9,13 +9,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.ssafy.web.exception.UnauthorizedException;
 import com.ssafy.web.service.JwtService;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
@@ -27,6 +23,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		System.out.println("인터셉팅!!!!");
+		System.out.println(request.getRequestURI());
 		// axios의 Preflight OPTION요청을 거르기 위함
 		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
 			return true;
@@ -46,16 +44,16 @@ public class JwtInterceptor implements HandlerInterceptor {
 			}		
 		}
 		
-		if(bearer != null) {
+		if(bearer != null && !"".equals(bearer)) {
 			final String token = request.getHeader(HEADER_AUTH).split(" ")[1];
 			try {
-				if (token != null && jwtService.isUsable(token)) {
+				if (token != null && !"".equals(bearer) && jwtService.isUsable(token)) {
 					return true;
 				}
 			}catch(ExpiredJwtException e) {
 				try {
 					if(refreshToken != null && jwtService.isUsable(refreshToken)) {
-						response.sendError(444, "기존 토큰이 만료되었습니다. 해당 토큰을 가지고 새 토큰을 발급받아주세요.");	
+						response.sendError(444, "기존 토큰이 만료되었습니다. 해당 토큰을 가지고 새 토큰을 발급받습니다..");	
 						return false;
 					}
 				}catch(Exception reLogin) {
