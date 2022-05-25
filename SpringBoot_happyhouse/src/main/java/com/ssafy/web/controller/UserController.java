@@ -143,7 +143,7 @@ public class UserController {
 		String accessToken = null;
 		String refreshToken = null;
 		if(cookies == null) {
-			return new ResponseEntity<String>("로그인 해주세요", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<String>("로그인 해주세요", HttpStatus.ACCEPTED);
 		}
 		for (Cookie c : cookies) {
 			if ("accessToken".equals(c.getName())) {
