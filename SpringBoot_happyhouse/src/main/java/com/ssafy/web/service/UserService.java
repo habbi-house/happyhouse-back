@@ -1,5 +1,7 @@
 package com.ssafy.web.service;
 
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.web.dao.UserDAO;
 import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
+import com.ssafy.web.vo.WishVO;
 
 @Service
 public class UserService {
@@ -43,12 +46,24 @@ public class UserService {
 		return userDAO.getToken(no);
 	}
 	
-	public int addToken(TokenVO tokenVo) {
-		return userDAO.addToken(tokenVo);
+	public int addToken(TokenVO tokenVO) {
+		return userDAO.addToken(tokenVO);
 	}
 	
 	public void deleteToken(int no) {
 		userDAO.deleteToken(no);
+	}
+	
+	public void addWish(WishVO wishVO) {
+		userDAO.addWish(wishVO);
+	}
+	
+	public void deleteWish(WishVO wishVO) {
+		userDAO.deleteWish(wishVO);
+	}
+	
+	public List<BigInteger> getWishlist(String email){
+		return userDAO.getWishlist(email);
 	}
 	
 }

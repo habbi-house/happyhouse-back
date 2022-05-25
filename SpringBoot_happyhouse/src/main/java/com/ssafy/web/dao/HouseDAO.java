@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.web.vo.AddressVO;
 import com.ssafy.web.vo.HouseDealVO;
 import com.ssafy.web.vo.HouseInfoVO;
+import com.ssafy.web.vo.WishInfoVO;
+import com.ssafy.web.vo.WishVO;
 
 @Mapper
 @Repository
@@ -23,5 +25,9 @@ public interface HouseDAO {
 	List<HouseInfoVO> getAllHousesByDong(String dongCode) throws DataAccessException;
 
 	List<HouseDealVO> getHouseDealList(BigInteger aptCode) throws DataAccessException;
+
+	HouseInfoVO getHouseInfo(BigInteger aptCode);
+	
+	List<WishInfoVO> getWishInfo(List<BigInteger> wishlist);
 	
 }

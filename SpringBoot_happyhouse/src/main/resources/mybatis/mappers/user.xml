@@ -39,13 +39,13 @@
 		WHERE no=#{no}
 	</delete>
 	
-	<select id="getToken" parameterType="int" resultType="tokenVo">
+	<select id="getToken" parameterType="int" resultType="tokenVO">
 		SELECT *
 		FROM token
 		WHERE no=#{no}
 	</select>
 	
-	<insert id="addToken" parameterType="tokenVo">
+	<insert id="addToken" parameterType="tokenVO">
 		INSERT INTO token (email, refreshToken)
 		VALUES (#{email}, #{refreshToken})
 		<selectKey resultType="int" keyProperty="no" order="AFTER">
@@ -57,6 +57,22 @@
 		DELETE FROM token
 		WHERE no=#{no}
 	</delete>
+	
+	<insert id="addWish" parameterType="wishVO">
+		INSERT INTO wishlist (email, aptCode)
+		VALUES (#{email}, #{aptCode})
+	</insert>
+	
+	<delete id="deleteWish" parameterType="wishVO">
+		DELETE FROM wishlist
+		WHERE email=#{email} AND aptCode = #{aptCode}
+	</delete>
+	
+	<select id="getWishlist" parameterType="String" resultType="BigInteger">
+		SELECT DISTINCT aptCode
+		FROM wishlist
+		WHERE email=#{email}
+	</select>
 	
 	
 </mapper>

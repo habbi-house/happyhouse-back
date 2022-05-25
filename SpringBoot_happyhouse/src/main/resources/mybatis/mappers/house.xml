@@ -39,5 +39,21 @@
 			where dongName = #{dong}
 			order by aptName;
 	</select> -->
+	<select id="getHouseInfo" parameterType="BigInteger" resultType="houseInfoVO">
+		SELECT *
+		FROM houseinfo
+		WHERE aptCode=#{aptCode} 
+	</select>
+	
+	<select id="getWishInfo" parameterType="list" resultType="WishInfoVO">
+		select h.aptCode, h.dongCode, h.apartmentName , concat(d.sidoName," ", d.gugunname," ", d.dongName) as address
+		from houseinfo h
+		join dongcode d
+		on h.dongCode = d.dongCode
+		where aptCode IN 
+			<foreach collection="wishlist" item="aptCode" index="index" separator="," open="(" close=")">
+                    #{aptCode}
+            </foreach>
+	</select>
 	
 </mapper>

@@ -1,6 +1,9 @@
 package com.ssafy.web.controller;
 
+import java.math.BigInteger;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -24,6 +27,7 @@ import com.ssafy.web.service.KakaoLogin;
 import com.ssafy.web.service.UserService;
 import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
+import com.ssafy.web.vo.WishVO;
 
 import io.jsonwebtoken.JwtException;
 
@@ -55,10 +59,10 @@ public class UserController {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 		
-		TokenVO tokenVo = new TokenVO();
-		tokenVo.setEmail(userInfo.get("email"));
-		tokenVo.setRefreshToken(refreshToken);
-		int tokenIdx = userService.addToken(tokenVo);
+		TokenVO tokenVO = new TokenVO();
+		tokenVO.setEmail(userInfo.get("email"));
+		tokenVO.setRefreshToken(refreshToken);
+		int tokenIdx = userService.addToken(tokenVO);
 		userInfo.put("tokenIdx", Integer.toString(tokenIdx));
 
 		String accessToken = jwtService.create("user", userInfo, "user");
@@ -100,10 +104,10 @@ public class UserController {
 			cookie.setPath("/");
 			response.addCookie(cookie);
 			
-			TokenVO tokenVo = new TokenVO();
-			tokenVo.setEmail(user.getEmail());
-			tokenVo.setRefreshToken(refreshToken);
-			int tokenIdx = userService.addToken(tokenVo);
+			TokenVO tokenVO = new TokenVO();
+			tokenVO.setEmail(user.getEmail());
+			tokenVO.setRefreshToken(refreshToken);
+			int tokenIdx = userService.addToken(tokenVO);
 			
 			Map<String, String> userInfo = new HashMap<>();
 			userInfo.put("tokenIdx", Integer.toString(tokenIdx));
@@ -236,5 +240,29 @@ public class UserController {
 	public ResponseEntity<Void> ping(){
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
+	@PostMapping("/addwish")
+	public ResponseEntity<Void> addwish(@RequestBody WishVO wishVO){
+		System.out.println("생성"+wishVO);
+		userService.addWish(wishVO);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/deletewish")
+	public ResponseEntity<Void> deletewish(@RequestBody WishVO wishVO){
+		System.out.println("삭제" +wishVO);
+		userService.deleteWish(wishVO);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/wishlist")
+	public ResponseEntity<List<BigInteger>> deletewish(@RequestBody String email){
+		email = email.substring(1, email.length() - 1);
+		System.out.println(email);
+		List<BigInteger> wishlist = userService.getWishlist(email);
+		
+		return new ResponseEntity<List<BigInteger>>(wishlist, HttpStatus.OK);
+	}
+
 
 }

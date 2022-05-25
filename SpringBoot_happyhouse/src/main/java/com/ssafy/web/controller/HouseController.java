@@ -19,6 +19,8 @@ import com.ssafy.web.service.HouseService;
 import com.ssafy.web.vo.AddressVO;
 import com.ssafy.web.vo.HouseDealVO;
 import com.ssafy.web.vo.HouseInfoVO;
+import com.ssafy.web.vo.WishInfoVO;
+import com.ssafy.web.vo.WishVO;
 
 @RestController
 @RequestMapping("/search")
@@ -44,6 +46,20 @@ public class HouseController {
 	public ResponseEntity<List<HouseDealVO>> getAllHouseDeals(@PathVariable("id") BigInteger aptCode) {
 		List<HouseDealVO> houseDealList = houseService.getHouseDealList(aptCode);
 		return new ResponseEntity<List<HouseDealVO>>(houseDealList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/info/{id}")
+	public ResponseEntity<HouseInfoVO> getHouseInfo(@PathVariable("id") String aptCode) {
+		System.out.println(aptCode);
+		HouseInfoVO houseInfoVO = houseService.getHouseInfo(new BigInteger(aptCode));
+		
+		return new ResponseEntity<HouseInfoVO>(houseInfoVO, HttpStatus.OK);
+	}
+	
+	@PostMapping("/wishinfo")
+	public ResponseEntity<List<WishInfoVO>> getHouseInfo(@RequestBody List<BigInteger> wishlist) {
+		List<WishInfoVO> wishInfo = houseService.getWishInfo(wishlist);
+		return new ResponseEntity<List<WishInfoVO>>(wishInfo, HttpStatus.OK);
 	}
 	
 //	@PostMapping("/index")
