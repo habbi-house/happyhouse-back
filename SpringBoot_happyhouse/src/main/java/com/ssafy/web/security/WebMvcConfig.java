@@ -24,6 +24,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	        "/board/list",
 	        "/board/{id}",
 	        "/search/**",
+	        "/s3/upload",
+	        "/s3/delete",
 	        "/error"
 	    };
 	 
