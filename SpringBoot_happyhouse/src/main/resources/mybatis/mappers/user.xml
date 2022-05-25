@@ -19,7 +19,7 @@
 	<select id="getUser" parameterType="map" resultType="userVO">
 		SELECT *
 		FROM user
-		WHERE email=#{email} AND password=#{password}
+		WHERE email=#{email}
 	</select>
 	
 	<select id="getUserByNo" parameterType="int" resultType="userVO">

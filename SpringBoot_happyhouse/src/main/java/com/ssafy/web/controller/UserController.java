@@ -1,7 +1,6 @@
 package com.ssafy.web.controller;
 
 import java.math.BigInteger;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +82,13 @@ public class UserController {
 	public ResponseEntity<String> createUser(@RequestBody UserVO user) {
 		System.out.println(user);
 		int cnt = userService.checkEmail(user);
+		
+		// TODO: 패턴 검증
+		
+		// 비밀번호 암호화
+		String password = user.getPassword();
+		String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		user.setPassword(encryptedPassword);
 
 		if (cnt == 0) {
 			userService.createUser(user);
@@ -92,10 +99,10 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody Map<String, String> map, HttpServletResponse response) {
+	public ResponseEntity<String> login(@RequestBody Map<String, String> map, HttpServletResponse response) {		
 		UserVO user = userService.getUser(map);
-		if (user != null) {
 
+		if(user != null && BCrypt.checkpw(map.get("password"), user.getPassword())) {
 			String refreshToken = jwtService.createRefreshToken();
 			Cookie cookie = new Cookie("refreshToken", refreshToken);
 			cookie.setMaxAge((int)System.currentTimeMillis() * 86400 * 1000);
@@ -124,10 +131,9 @@ public class UserController {
 			response.addCookie(accessCookie);
 
 			return new ResponseEntity<String>(accessToken, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("아이디와 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED);
 		}
-
+		
+		return new ResponseEntity<String>("아이디와 비밀번호를 확인해주세요.", HttpStatus.UNAUTHORIZED);
 	}
 
 	@GetMapping("/refresh")
