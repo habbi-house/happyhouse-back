@@ -22,6 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	        "/user/refresh",
 	        "/board",
 	        "/board/list",
+	        "/board/{id}",
 	        "/search/**",
 	        "/error"
 	    };

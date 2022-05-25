@@ -35,8 +35,8 @@ public class JwtServiceImpl implements JwtService{
                          .setHeaderParam("typ", "JWT")
                          .setIssuedAt(now)
                          .setSubject(subject)
-//                         .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 2))
-                         .setExpiration(new Date(System.currentTimeMillis() + 5000))
+                         .setExpiration(new Date(System.currentTimeMillis() + 86400 * 1000 * 2))
+//                         .setExpiration(new Date(System.currentTimeMillis() + 5000))
                          .claim(key, data)
                          .signWith(SignatureAlgorithm.HS256, this.generateKey())
                          .compact();

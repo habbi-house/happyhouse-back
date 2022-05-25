@@ -25,6 +25,8 @@ import com.ssafy.web.service.UserService;
 import com.ssafy.web.vo.TokenVO;
 import com.ssafy.web.vo.UserVO;
 
+import io.jsonwebtoken.JwtException;
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("http://localhost:8080")
@@ -140,20 +142,23 @@ public class UserController {
 				refreshToken = c.getValue();
 			}
 		}
-		if (refreshToken != null && jwtService.isUsable(refreshToken)) {
-			accessToken = jwtService.create("user", jwtService.getMember(accessToken), "user");
-			// DB에 토큰을 다시 갱신
-			Cookie accessCookie = new Cookie("accessToken", accessToken);
-			accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
-			accessCookie.setSecure(true);
-			accessCookie.setHttpOnly(true);
-			accessCookie.setPath("/");
-			response.addCookie(accessCookie);
-
-			return new ResponseEntity<String>(accessToken, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
+		try {
+			if (refreshToken != null && jwtService.isUsable(refreshToken)) {
+				accessToken = jwtService.create("user", jwtService.getMember(accessToken), "user");
+				// DB에 토큰을 다시 갱신
+				Cookie accessCookie = new Cookie("accessToken", accessToken);
+				accessCookie.setMaxAge((int)System.currentTimeMillis() * 1800 * 1000);
+				accessCookie.setSecure(true);
+				accessCookie.setHttpOnly(true);
+				accessCookie.setPath("/");
+				response.addCookie(accessCookie);
+	
+				return new ResponseEntity<String>(accessToken, HttpStatus.OK);
+			}
+		} catch(JwtException e) {
+			System.out.println(e.getMessage());
 		}
+		return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
 	}
 
 	@PostMapping("/delete")
