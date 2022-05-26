@@ -142,6 +142,8 @@ public class JwtServiceImpl implements JwtService{
 			// claims가 비어있는 경우
 			System.out.println(e.getMessage());
 			throw e;
+		} catch(Exception e) {
+			throw e;
 		}
 		
 		return true;

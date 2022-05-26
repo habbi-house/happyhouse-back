@@ -165,6 +165,8 @@ public class UserController {
 			}
 		} catch(JwtException e) {
 			System.out.println(e.getMessage());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 		}
 		return new ResponseEntity<String>("다시 로그인 해주세요", HttpStatus.I_AM_A_TEAPOT);
 	}
