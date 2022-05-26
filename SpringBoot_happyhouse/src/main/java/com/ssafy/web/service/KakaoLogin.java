@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.web.util.ApiKey;
-import com.ssafy.web.vo.UserVO;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class KakaoLogin {
             bw.flush();
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             String result = "";
@@ -55,7 +54,6 @@ public class KakaoLogin {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
@@ -66,9 +64,6 @@ public class KakaoLogin {
             tokens.put("accessToken", access_Token);
             tokens.put("refreshToken", refresh_Token);
             
-            System.out.println("accessToken : " + access_Token);
-            System.out.println("refreshToken : " + refresh_Token);
-
             br.close();
             bw.close();
         }catch (IOException e) {
@@ -90,8 +85,6 @@ public class KakaoLogin {
             conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-            System.out.println(conn.getResponseMessage());
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
@@ -100,7 +93,6 @@ public class KakaoLogin {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
@@ -117,9 +109,6 @@ public class KakaoLogin {
             } else {
             	email = "anonymous@happyhouse.com";
             }
-
-            System.out.println("name : " + nickname);
-            System.out.println("email : " + email);
 
             br.close();
             

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,10 +31,8 @@ public class AwsS3Controller {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseEntity<String> deleteImage(String imgUrl) {
-		System.out.println(imgUrl);
+	public ResponseEntity<String> deleteImage(@RequestBody String imgUrl) {
 		String fileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
-		System.out.println(fileName);
 		awsS3Service.deleteFile(fileName);			
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

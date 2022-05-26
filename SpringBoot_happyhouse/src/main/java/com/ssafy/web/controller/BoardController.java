@@ -1,10 +1,6 @@
 package com.ssafy.web.controller;
 
 import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,16 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.web.service.BoardService;
 import com.ssafy.web.service.JwtService;
 import com.ssafy.web.vo.PostVO;
-import com.ssafy.web.vo.UserVO;
 
 @RestController
 @RequestMapping("/board")
@@ -98,43 +90,4 @@ public class BoardController {
 		}
 	}
 	
-//	@GetMapping("/create")
-//	public ModelAndView createPostView(
-//			@RequestParam(value = "originNo", required = false, defaultValue = "0") int originNo,
-//			@RequestParam(value = "groupLayer", required = false, defaultValue = "0") int groupLayer,
-//			HttpSession session) {
-//		ModelAndView mav = new ModelAndView("board/createPost");
-//
-//		String token = UUID.randomUUID().toString();
-//		session.setAttribute("CSRF_TOKEN", token);
-//
-//		if (originNo > 0) { // 답글 작성하기
-//			mav.addObject("originNo", originNo);
-//			mav.addObject("groupLayer", groupLayer);
-//		}
-//		return mav;
-//	}
-//
-//	@GetMapping("/{id}/update")
-//	public ModelAndView updatePostView(@PathVariable("id") int code, HttpSession session,
-//			RedirectAttributes redirectAttributes) {
-//		UserVO user = (UserVO) session.getAttribute("user");
-//		PostVO post = boardService.getPost(code);
-//
-//		ModelAndView mav = new ModelAndView();
-//		if (post != null && user != null && post.getWriter().equals(user.getId())) {
-//			mav.setViewName("board/updatePost");
-//			mav.addObject("post", post);
-//			String token = UUID.randomUUID().toString();
-//			session.setAttribute("CSRF_TOKEN", token);
-//		} else {
-//			mav.setViewName("redirect:/");
-//			redirectAttributes.addFlashAttribute("ok", false);
-//			redirectAttributes.addFlashAttribute("msg", "접근 권한이 없습니다.");
-//		}
-//
-//		return mav;
-//	}
-//
-//
 }

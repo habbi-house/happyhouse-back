@@ -80,7 +80,6 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<String> createUser(@RequestBody UserVO user) {
-		System.out.println(user);
 		int cnt = userService.checkEmail(user);
 		
 		// TODO: 패턴 검증
@@ -138,7 +137,6 @@ public class UserController {
 
 	@GetMapping("/refresh")
 	public ResponseEntity<String> refreshUser(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("refresh호출됨");
 		Cookie[] cookies = request.getCookies();
 		String accessToken = null;
 		String refreshToken = null;
@@ -249,14 +247,12 @@ public class UserController {
 	
 	@PostMapping("/addwish")
 	public ResponseEntity<Void> addwish(@RequestBody WishVO wishVO){
-		System.out.println("생성"+wishVO);
 		userService.addWish(wishVO);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/deletewish")
 	public ResponseEntity<Void> deletewish(@RequestBody WishVO wishVO){
-		System.out.println("삭제" +wishVO);
 		userService.deleteWish(wishVO);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -264,7 +260,6 @@ public class UserController {
 	@PostMapping("/wishlist")
 	public ResponseEntity<List<BigInteger>> deletewish(@RequestBody String email){
 		email = email.substring(1, email.length() - 1);
-		System.out.println(email);
 		List<BigInteger> wishlist = userService.getWishlist(email);
 		
 		return new ResponseEntity<List<BigInteger>>(wishlist, HttpStatus.OK);

@@ -47,35 +47,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.allowedMethods("*")
 			.allowCredentials(true);
 	}
-	    
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		
-//		// 로그인 되어 있는 사용자만 허용
-//		registry.addInterceptor(new AuthenticationInterceptor())
-//				.addPathPatterns("/user/**")
-//				.addPathPatterns("/board/create")
-//				.addPathPatterns("/board/**/update")
-//				.addPathPatterns("/board/**/delete")
-//				.excludePathPatterns("/user/login")
-//				.excludePathPatterns("/user/signup")
-//				.excludePathPatterns("/user/kakao");
-//		
-//		// 사용자가 접근 가능한 자원인지에 대한 권한 체크
-//		registry.addInterceptor(new AuthorizationInterceptor())
-//			.addPathPatterns("/user/**")
-//			.excludePathPatterns("/user/login")
-//			.excludePathPatterns("/user/signup")
-//			.excludePathPatterns("/user/logout")
-//			.excludePathPatterns("/user/kakao");
-//		
-//		// CSRF 토큰 검증
-//		registry.addInterceptor(new CSRFInterceptor())
-//		.addPathPatterns("/board/create")
-//		.addPathPatterns("/board/**/update")
-//		.addPathPatterns("/board/**/delete");
-//		
-//	}
 	
 	@Bean
 	public FilterRegistrationBean<XssEscapeServletFilter> filterRegistrationBean() {

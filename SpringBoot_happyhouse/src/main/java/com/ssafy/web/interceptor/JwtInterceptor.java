@@ -23,8 +23,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("인터셉팅!!!!");
-		System.out.println(request.getRequestURI());
 		// axios의 Preflight OPTION요청을 거르기 위함
 		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
 			return true;

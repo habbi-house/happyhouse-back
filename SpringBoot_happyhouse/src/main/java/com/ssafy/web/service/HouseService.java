@@ -2,7 +2,6 @@ package com.ssafy.web.service;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import com.ssafy.web.vo.AddressVO;
 import com.ssafy.web.vo.HouseDealVO;
 import com.ssafy.web.vo.HouseInfoVO;
 import com.ssafy.web.vo.WishInfoVO;
-import com.ssafy.web.vo.WishVO;
 
 @Service
 public class HouseService {

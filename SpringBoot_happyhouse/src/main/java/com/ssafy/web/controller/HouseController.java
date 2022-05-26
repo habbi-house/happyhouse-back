@@ -21,7 +21,6 @@ import com.ssafy.web.vo.AddressVO;
 import com.ssafy.web.vo.HouseDealVO;
 import com.ssafy.web.vo.HouseInfoVO;
 import com.ssafy.web.vo.WishInfoVO;
-import com.ssafy.web.vo.WishVO;
 
 @RestController
 @RequestMapping("/search")
@@ -69,11 +68,4 @@ public class HouseController {
 			
 	}
 	
-//	@PostMapping("/index")
-//	public ModelAndView search(@RequestParam Map<String, String> areaInfo) {
-//		ModelAndView mav = new ModelAndView("search");
-//		mav.addObject("areaInfo", areaInfo);
-//		mav.addObject("list", houseService.getHouseDealList(areaInfo.get("dong")));
-//		return mav;
-//	}
 }

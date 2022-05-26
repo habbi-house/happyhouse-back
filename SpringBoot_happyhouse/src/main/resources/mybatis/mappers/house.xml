@@ -8,12 +8,6 @@
 	<select id="getBaseAddress" resultType="addressVO">
 		SELECT * FROM dongcode
 	</select>
-<!-- 	
-	<select id="getDongcode" parameterType="addressVO" resultType="string">
-		SELECT dongCode
-		FROM dongcode
-		WHERE sidoName=#{sidoName} AND gugunName=#{gugunName} AND dongName=#{dongName}
-	</select> -->
 	
 	<select id="getAllHousesByDong" parameterType="string" resultType="houseInfoVO">
 		SELECT *
@@ -27,18 +21,6 @@
 		WHERE aptCode=#{aptCode}
 	</select>
 	
-<!-- 	<select id="getHouseDealList" parameterType="string" resultType="houseDealVO">
-		select h.aptCode, h.aptName, h.buildyear as builtYear, h.dongCode, h.dongName as dong, h.jibun as areaNumber, h.lat, h.lng, si.sidoname, gu.gugunname, hd.dealAmount, hd.area, hd.dealYear, hd.dealMonth, hd.dealDay, hd.floor
-			from houseinfo h
-			left join sidocode si
-			on left(h.dongcode,2) = left(si.sidocode,2)
-			left join guguncode gu
-			on left(h.dongcode,5) = left(gu.guguncode,5)
-	        left join housedeal hd
-	        on hd.aptcode = h.aptcode
-			where dongName = #{dong}
-			order by aptName;
-	</select> -->
 	<select id="getHouseInfo" parameterType="BigInteger" resultType="houseInfoVO">
 		SELECT *
 		FROM houseinfo

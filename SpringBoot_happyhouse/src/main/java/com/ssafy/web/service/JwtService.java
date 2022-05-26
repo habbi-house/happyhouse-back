@@ -2,8 +2,6 @@ package com.ssafy.web.service;
 
 import java.util.Map;
 
-import com.ssafy.web.vo.UserVO;
-
 public interface JwtService {
     <T> String create(String key, T data, String subject);
     String createRefreshToken();

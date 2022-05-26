@@ -22,7 +22,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
-
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService{
  
@@ -84,7 +83,6 @@ public class JwtServiceImpl implements JwtService{
 		}
 		@SuppressWarnings("unchecked")
         Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get(key);
-        System.out.println(value);
 		return value;
 	}
 	
@@ -96,7 +94,6 @@ public class JwtServiceImpl implements JwtService{
 						 .setSigningKey(SALT.getBytes("UTF-8"))
 						 .parseClaimsJws(jwt);
 		} catch (ExpiredJwtException e) {
-			System.out.println(e.getClaims().get("user"));
 			return (Map<String, Object>)e.getClaims().get("user");
 		}
 		catch (Exception e) {
@@ -105,7 +102,6 @@ public class JwtServiceImpl implements JwtService{
 		}
 		@SuppressWarnings("unchecked")
         Map<String, Object> value = (LinkedHashMap<String, Object>)claims.getBody().get("user");
-        System.out.println(value);
 		return value;
 	}
 	
