@@ -1,6 +1,7 @@
 package com.ssafy.web.controller;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,14 @@ public class HouseController {
 	
 	@PostMapping("/wishinfo")
 	public ResponseEntity<List<WishInfoVO>> getHouseInfo(@RequestBody List<BigInteger> wishlist) {
-		List<WishInfoVO> wishInfo = houseService.getWishInfo(wishlist);
-		return new ResponseEntity<List<WishInfoVO>>(wishInfo, HttpStatus.OK);
+		List<WishInfoVO> wishInfo = new ArrayList<>();
+		if(wishlist.size() != 0) {
+			wishInfo = houseService.getWishInfo(wishlist);
+			return new ResponseEntity<List<WishInfoVO>>(wishInfo, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<List<WishInfoVO>>(wishInfo, HttpStatus.ACCEPTED);
+			
 	}
 	
 //	@PostMapping("/index")
